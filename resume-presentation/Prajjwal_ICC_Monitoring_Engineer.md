@@ -1,0 +1,36 @@
+# Prajjwal Mishra
+### Lead ICC Monitoring & Command Center Systems Specialist (ICC Monitoring Engineer)
+**Contact:** Email: `prajjwal.icc@talentpilot-demo.ai` | Phone: `+1 (555) 724-1189` | Location: Dallas, TX (Hybrid / Remote)
+
+---
+
+## Professional Summary
+Enterprise Command Center and Infrastructure Telemetry Specialist with 6+ years driving 24x7 Integrated Command Center (ICC/NOC) surveillance, automated incident response, and end-to-end observability across distributed cloud and on-premise infrastructure. Expert in Prometheus, Grafana, Dynatrace, Splunk, and ServiceNow Event Management, orchestrating rapid P1/P2 triage, SLA compliance, telemetry noise filtering, and high-availability operations.
+
+## Technical Proficiencies & Core Skills
+- **Telemetry & Observability:** Prometheus, Grafana, Dynatrace, Splunk Enterprise, Nagios Core, Datadog, Zabbix, Elastic Stack (ELK)
+- **Incident & Event Management:** ServiceNow Event Management, PagerDuty, Opsgenie, ITIL v4 Incident & Problem Lifecycle, Major Incident Management (MIM)
+- **Infrastructure Surveillance:** Enterprise Server Racks, VMware vSphere, SAN/NAS Storage arrays, Cisco ACI, Network Core Switches, AWS CloudWatch, Azure Monitor
+- **Automation & Scripting:** Python 3, Bash / Shell Scripting, Webhooks, REST APIs, Ansible Automation, Automated Runbook Execution
+- **Governance & Metrics:** 24x7 Shift Handover, MTTR & MTBF Optimization, SLA Auditing, Root Cause Analysis (RCA), Blameless Postmortems
+
+## Professional Experience
+### Lead ICC Monitoring & Telemetry Engineer - *Vanguard Telecom & Cloud Infrastructure* (2022 - Present)
+- Direct 24x7 Integrated Command Center operations across 3 geo-distributed enterprise datacenters, supervising real-time telemetry for 4,200+ physical and virtual host nodes.
+- Architected 40+ high-definition Grafana and Dynatrace telemetry dashboards, correlating network throughput, CPU/memory threshold spikes, and service latency in real time.
+- Engineered automated event suppression and alert deduplication rules in Splunk and ServiceNow, reducing alert noise by 64% and eliminating operator fatigue.
+- Command live P1/P2 critical outage bridges with cross-functional network, database, and platform engineering teams, reducing Mean Time to Resolution (MTTR) from 38 minutes to under 14 minutes.
+- Designed webhook-based automated remediation workflows triggering self-healing runbooks for transient memory leaks, service restarts, and disk space reclamation.
+
+### Infrastructure Monitoring & NOC Specialist - *Apex Enterprise Systems* (2018 - 2022)
+- Monitored mission-critical banking transactions, payment gateways, and network backbones using Nagios, Zabbix, and Prometheus with 99.995% SLA adherence.
+- Conducted automated hourly health checks, synthetic availability runs, and capacity forecasting reports delivered to executive leadership.
+- Authored 25+ comprehensive Standard Operating Procedures (SOPs) and disaster recovery runbooks adopted by all ICC shift operators and incident response squads.
+
+## Certifications & Accreditations
+- ITIL v4 Foundation / Managing Professional Certified
+- Splunk Enterprise Certified Power User
+- Dynatrace Associate Observability Certification
+
+## Education
+- B.Tech in Electronics & Telecommunication Engineering, National Institute of Technology (2018)
