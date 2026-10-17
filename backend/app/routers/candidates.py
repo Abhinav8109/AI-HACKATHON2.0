@@ -665,5 +665,35 @@ async def trigger_deep_ai_reevaluation(
         "evidence_count": len(per_q)
     }
 
+@router.delete("/{candidate_id}")
+def delete_candidate(
+    candidate_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role([UserRole.SUPER_ADMIN.value, UserRole.RECRUITER_ADMIN.value]))
+):
+    candidate = db.query(Candidate).filter(Candidate.id == candidate_id).first()
+    if not candidate:
+        raise HTTPException(status_code=404, detail="Candidate not found")
+
+    # Clean up associated final decisions
+    db.query(FinalDecision).filter(FinalDecision.candidate_id == candidate.id).delete()
+    
+    cand_name = candidate.full_name
+    db.delete(candidate)
+    db.commit()
+
+    AuditService.log(
+        db,
+        action="CANDIDATE_DELETED",
+        resource_type="CANDIDATE",
+        resource_id=candidate_id,
+        user_id=current_user.id,
+        user_email=current_user.email,
+        details={"candidate_name": cand_name}
+    )
+
+    return {"message": f"Candidate {cand_name} deleted successfully"}
+
+
 
 

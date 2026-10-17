@@ -226,6 +226,11 @@ def reset_demo_session(
     db: Session = Depends(get_db)
 ):
     inv, session, candidate, campaign = get_portal_session_context(token, db)
+    if session.status == SessionStatus.COMPLETED.value:
+        raise HTTPException(
+            status_code=400,
+            detail="This interview has reached terminal completed status. Submissions are permanently locked and cannot be retaken."
+        )
     session.status = SessionStatus.NOT_STARTED.value
     session.current_question_index = 0
     session.started_at = None

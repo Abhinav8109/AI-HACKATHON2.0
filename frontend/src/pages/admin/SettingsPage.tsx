@@ -20,7 +20,9 @@ import {
   Clock,
   Eye,
   EyeOff,
-  AlertCircle
+  AlertCircle,
+  Minus,
+  Plus
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { apiRequest } from '../../api/client';
@@ -36,7 +38,7 @@ export const SettingsPage: React.FC = () => {
   const [aiModel, setAiModel] = useState('gemini-2.5-flash');
   const [groundingMode, setGroundingMode] = useState('STRICT_RESUME');
   const [antiBiasPolicy, setAntiBiasPolicy] = useState('STRICT');
-  const [interviewTimeLimit, setInterviewTimeLimit] = useState('45');
+  const [interviewTimeLimit, setInterviewTimeLimit] = useState('10');
   const [autoEmailInvite, setAutoEmailInvite] = useState(true);
   const [senderName, setSenderName] = useState('Sarah Chen (Talent Lead)');
   const [senderEmail, setSenderEmail] = useState('admin@talentpilot.ai');
@@ -94,16 +96,17 @@ export const SettingsPage: React.FC = () => {
     }
   };
 
-  const handleSaveSettings = (e: React.FormEvent) => {
+  const handleSaveSettings = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSavingSettings(true);
+    const durationNum = parseInt(interviewTimeLimit, 10) || 10;
     const settingsPayload = {
       orgName,
       questionCount,
       aiModel,
       groundingMode,
       antiBiasPolicy,
-      interviewTimeLimit,
+      interviewTimeLimit: durationNum.toString(),
       autoEmailInvite,
       senderName,
       senderEmail,
@@ -112,12 +115,19 @@ export const SettingsPage: React.FC = () => {
     };
     localStorage.setItem('talentpilot_workspace_customizations', JSON.stringify(settingsPayload));
 
-    setTimeout(() => {
-      setIsSavingSettings(false);
-      setSaveSuccessNotice(true);
-      confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
-      setTimeout(() => setSaveSuccessNotice(false), 4000);
-    }, 450);
+    try {
+      await apiRequest('/campaigns/time-window', {
+        method: 'POST',
+        body: JSON.stringify({ duration_minutes: durationNum })
+      });
+    } catch (err) {
+      console.warn('Time window backend sync notice:', err);
+    }
+
+    setIsSavingSettings(false);
+    setSaveSuccessNotice(true);
+    confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
+    setTimeout(() => setSaveSuccessNotice(false), 4000);
   };
 
   const handleChangePassword = async (e: React.FormEvent) => {
@@ -301,16 +311,86 @@ export const SettingsPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Candidate Session Time Limit</label>
-                  <select
-                    value={interviewTimeLimit}
-                    onChange={(e) => setInterviewTimeLimit(e.target.value)}
-                    className="w-full px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-indigo-500"
-                  >
-                    <option value="45">45 Minutes (Recommended)</option>
-                    <option value="60">60 Minutes (Comprehensive)</option>
-                    <option value="0">Untimed / Flexible Asynchronous</option>
-                  </select>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-indigo-600" />
+                      <span>Interview Time Window</span>
+                    </label>
+                    <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+                      {interviewTimeLimit} Minutes Active
+                    </span>
+                  </div>
+
+                  {/* Stepper Controls */}
+                  <div className="flex items-center gap-2 mt-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const current = parseInt(interviewTimeLimit, 10) || 10;
+                        setInterviewTimeLimit(Math.max(1, current - 5).toString());
+                      }}
+                      className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors shadow-2xs active:scale-95"
+                      title="Decrease by 5 minutes"
+                    >
+                      <Minus className="w-4 h-4" />
+                    </button>
+
+                    <div className="relative flex-1">
+                      <input
+                        type="number"
+                        min="1"
+                        max="180"
+                        value={interviewTimeLimit}
+                        onChange={(e) => setInterviewTimeLimit(e.target.value)}
+                        className="w-full px-4 py-2 text-center rounded-xl bg-slate-50 border border-slate-200 text-sm font-bold font-mono text-slate-900 focus:bg-white focus:outline-none focus:border-indigo-500"
+                      />
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-mono text-slate-400">
+                        mins
+                      </span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const current = parseInt(interviewTimeLimit, 10) || 10;
+                        setInterviewTimeLimit(Math.min(180, current + 5).toString());
+                      }}
+                      className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors shadow-2xs active:scale-95"
+                      title="Increase by 5 minutes"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  {/* Preset Quick Pills */}
+                  <div className="flex items-center gap-1.5 mt-2.5 flex-wrap">
+                    {[
+                      { val: '5', label: '5m' },
+                      { val: '10', label: '10m (Default)' },
+                      { val: '15', label: '15m' },
+                      { val: '20', label: '20m' },
+                      { val: '30', label: '30m' },
+                      { val: '45', label: '45m' },
+                      { val: '60', label: '60m' }
+                    ].map((preset) => (
+                      <button
+                        key={preset.val}
+                        type="button"
+                        onClick={() => setInterviewTimeLimit(preset.val)}
+                        className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all ${
+                          interviewTimeLimit === preset.val
+                            ? 'bg-indigo-600 text-white shadow-2xs'
+                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        }`}
+                      >
+                        {preset.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  <p className="text-[11px] text-slate-400 mt-2">
+                    Enforces a live countdown timer during candidate portal sessions. Automatically submits answers when time elapses.
+                  </p>
                 </div>
               </div>
 

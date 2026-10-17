@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.user import User, UserRole
@@ -235,3 +236,33 @@ async def get_campaign_calibration(
         candidates_data=cands_data
     )
     return calibration
+
+class TimeWindowUpdate(BaseModel):
+    duration_minutes: int
+
+@router.post("/time-window")
+def update_interview_time_window(
+    req: TimeWindowUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role([UserRole.SUPER_ADMIN.value, UserRole.RECRUITER_ADMIN.value]))
+):
+    if req.duration_minutes < 1 or req.duration_minutes > 180:
+        raise HTTPException(status_code=400, detail="Duration must be between 1 and 180 minutes")
+    
+    campaigns = db.query(HiringCampaign).all()
+    for c in campaigns:
+        c.interview_duration_minutes = req.duration_minutes
+    db.commit()
+
+    AuditService.log(
+        db,
+        action="INTERVIEW_TIME_WINDOW_UPDATED",
+        resource_type="CAMPAIGN",
+        resource_id="ALL",
+        user_id=current_user.id,
+        user_email=current_user.email,
+        details={"duration_minutes": req.duration_minutes}
+    )
+
+    return {"message": f"Interview time window updated to {req.duration_minutes} minutes", "duration_minutes": req.duration_minutes}
+

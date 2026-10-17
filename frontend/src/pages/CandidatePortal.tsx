@@ -38,6 +38,8 @@ export const CandidatePortal: React.FC = () => {
   const [consentChecked, setConsentChecked] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [timeLeft, setTimeLeft] = useState<number>(600); // 10 minutes default (in seconds)
+  const [hasAutoSubmitted, setHasAutoSubmitted] = useState(false);
 
   // Fetch session details on load
   const loadSession = async () => {
@@ -46,6 +48,19 @@ export const CandidatePortal: React.FC = () => {
       setError(null);
       const data = await apiRequest(`/portal/session?token=${invitationToken}`);
       setSession(data);
+
+      // Initialize or restore countdown timer
+      const durationMins = data.duration_minutes || 10;
+      const totalSeconds = durationMins * 60;
+      const timerKey = `tp_timer_${invitationToken}`;
+      const savedStart = localStorage.getItem(timerKey);
+      if (savedStart) {
+        const elapsed = Math.floor((Date.now() - parseInt(savedStart, 10)) / 1000);
+        setTimeLeft(Math.max(0, totalSeconds - elapsed));
+      } else {
+        setTimeLeft(totalSeconds);
+      }
+
       if (data.session_status === 'COMPLETED') {
         setIsCompleted(true);
       } else if (data.session_status === 'IN_PROGRESS') {
@@ -95,10 +110,44 @@ export const CandidatePortal: React.FC = () => {
     try {
       await apiRequest(`/portal/start?token=${invitationToken}`, { method: 'POST' });
       setSession((prev: any) => ({ ...prev, session_status: 'IN_PROGRESS' }));
+
+      // Record timer start timestamp in localStorage to preserve across reloads
+      const timerKey = `tp_timer_${invitationToken}`;
+      if (!localStorage.getItem(timerKey)) {
+        localStorage.setItem(timerKey, Date.now().toString());
+      }
+
       await loadQuestion();
     } catch (e: any) {
       setError(e.message || 'Failed to start interview');
     }
+  };
+
+  // Countdown Timer Interval
+  useEffect(() => {
+    if (isCompleted || !session || session.session_status !== 'IN_PROGRESS' || isPaused) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          if (!hasAutoSubmitted) {
+            setHasAutoSubmitted(true);
+            handleFinalSubmit();
+          }
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isCompleted, session?.session_status, isPaused, hasAutoSubmitted]);
+
+  const formatTimer = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
   // Autosave answer
@@ -245,33 +294,21 @@ export const CandidatePortal: React.FC = () => {
           )}
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-            <button
-              onClick={async () => {
-                try {
-                  setIsLoading(true);
-                  await fetch(`/api/v1/portal/reset-demo?token=${invitationToken}`, { method: 'POST' });
-                  window.location.reload();
-                } catch (e) {
-                  console.error(e);
-                  window.location.reload();
-                }
-              }}
-              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all active:scale-98"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Retake / Restart Practice Assessment</span>
-            </button>
+            <div className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold text-xs inline-flex items-center justify-center gap-2 shadow-2xs">
+              <Lock className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Assessment Completed & Finalized</span>
+            </div>
             <a
               href="/"
-              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs inline-flex items-center justify-center gap-1.5 transition-all"
+              className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs inline-flex items-center justify-center gap-1.5 transition-all shadow-md shadow-indigo-600/20 active:scale-98"
             >
-              <span>Return to Main Website</span>
+              <span>Exit & Return Home</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </div>
 
           <div className="pt-2 text-[11px] text-slate-400 font-medium">
-            Demo candidates can be retaken anytime to test the candidate portal experience.
+            Your technical submission has reached terminal status and is sealed for recruiter evaluation. Retakes are strictly disabled.
           </div>
         </motion.div>
       </div>
@@ -433,6 +470,22 @@ export const CandidatePortal: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3">
+            {/* LIVE COUNTDOWN TIMER */}
+            <div
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border font-mono font-bold text-xs shadow-2xs transition-all ${
+                timeLeft <= 120
+                  ? 'bg-rose-50 border-rose-300 text-rose-700 animate-pulse ring-2 ring-rose-400/30'
+                  : timeLeft <= 300
+                  ? 'bg-amber-50 border-amber-300 text-amber-700'
+                  : 'bg-white border-slate-200 text-slate-700'
+              }`}
+              title="Allocated time window remaining for interview completion"
+            >
+              <Clock className={`w-3.5 h-3.5 ${timeLeft <= 120 ? 'text-rose-600' : 'text-slate-400'}`} />
+              <span>{formatTimer(timeLeft)}</span>
+              <span className="text-[10px] text-slate-400 font-sans font-normal hidden sm:inline">remaining</span>
+            </div>
+
             {saveSuccess && (
               <span className="text-[11px] text-emerald-600 flex items-center gap-1 font-mono font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
                 <Check className="w-3 h-3" /> Draft Saved

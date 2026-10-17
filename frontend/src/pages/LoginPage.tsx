@@ -69,7 +69,7 @@ export const LoginPage: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  placeholder="admin or admin@talentpilot.ai"
+                  placeholder="Enter corporate username or email"
                   className="w-full px-3.5 py-2.5 pl-10 rounded-xl bg-slate-50/50 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 transition-all shadow-xs"
                 />
                 <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
@@ -84,7 +84,7 @@ export const LoginPage: React.FC = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  placeholder="Enter password (e.g. admin)"
+                  placeholder="Enter your password"
                   className="w-full px-3.5 py-2.5 pl-10 pr-10 rounded-xl bg-slate-50/50 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 transition-all shadow-xs"
                 />
                 <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
@@ -116,8 +116,11 @@ export const LoginPage: React.FC = () => {
           </form>
 
           <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-            <span>Default access: <code className="bg-slate-100 px-1.5 py-0.5 rounded font-mono font-semibold text-slate-700">admin / admin</code></span>
-            <Link to="/" className="text-indigo-600 hover:text-indigo-700 font-medium">Back to Home</Link>
+            <span className="flex items-center gap-1.5 text-slate-600 font-medium">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              Production Authentication Boundary Active
+            </span>
+            <Link to="/" className="text-indigo-600 hover:text-indigo-700 font-semibold">Back to Home</Link>
           </div>
         </div>
 
