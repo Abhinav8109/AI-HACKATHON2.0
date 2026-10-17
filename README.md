@@ -1,22 +1,23 @@
 # TalentPilot AI
-## Enterprise Multi-Agent Technical Assessment & Autonomous Recruitment Engine
+## Enterprise Autonomous Multi-Agent Technical Assessment & Recruitment Intelligence Platform
 
-> **Architecture, High-Level Design (HLD), Low-Level Design (LLD), and System Documentation**
+> **Comprehensive System Documentation, High-Level Design (HLD), Low-Level Design (LLD), Multi-Agent Architecture, and API Reference**
 
 ---
 
 ## 1. Executive Summary
 
-TalentPilot AI is a full-stack, enterprise-grade talent intelligence platform engineered to transform technical recruiting. Traditional hiring pipelines suffer from high resume parsing error rates, generic interview question sets, lack of evidence-backed candidate scoring, and non-transparent automated rejections. 
+TalentPilot AI is a production-grade, autonomous talent intelligence and technical evaluation platform engineered to eliminate subjectivity, resume credential inflation, and generic question sets from engineering recruitment. Traditional hiring pipelines suffer from high resume parsing inaccuracy, generic LeetCode-style questions that fail to assess real-world systems engineering, absence of verifiable evidence quotes justifying numerical candidate ratings, and opaque, automated candidate rejections.
 
-TalentPilot AI resolves these systemic bottlenecks through a collaborative multi-agent architecture powered by Google Gemini 2.5 Flash, cryptographically isolated candidate assessment environments, real-time resume claim verification, and strict human-in-the-loop governance.
+TalentPilot AI fundamentally re-engineers this pipeline using a synchronized 10-Agent Multi-Agent Swarm powered by Google Gemini 2.5 Flash. The system grounds every assessment question in the candidate's verified resume claims and target job description, executes tamper-evident assessments within cryptographically isolated candidate portals, conducts deep per-question evidence audits with an honest 0.0 to 5.0 scoring engine, and enforces strict human-in-the-loop recruiter governance with zero autonomous rejections.
 
 ### Core Value Propositions
 
-- **Evidence-Grounded Technical Evaluations**: Every numerical score assigned to a candidate is strictly coupled to verbatim response quotes and verifiable claims.
-- **Deep Resume-Tailored Inquiries**: The Planner Agent analyzes candidate resumes to generate exactly 8 customized scenarios directly probing their claimed architecture, tools, metrics, and past incidents.
+- **Evidence-Grounded Technical Evaluations**: Every numerical rating is strictly bound to verbatim response citations and verified claims. Unsubstantiated ratings are structurally rejected by the evaluation engine.
+- **Deep Resume-Tailored Inquiries**: The Planner Agent analyzes candidate resumes to generate exactly 8 customized scenarios directly probing their claimed architecture, tools, metrics, concurrency models, and past production incidents.
+- **Per-Question Deep Evidence Audits**: Every single question response receives an independent AI evaluation, an honest score (0.0 to 5.0), and an architectural critique with verbatim quotes, visible in both the Recruiter Dossier and Transcript views.
 - **Strict Cryptographic Isolation**: Candidate sessions utilize 32-byte URL-safe cryptographic entropy with SHA-256 database hashing. No candidate can access, enumerate, or tamper with another candidate's session or dossier.
-- **Three-Stage Transactional Lifecycle**: Fully automated, reliable SMTP delivery across Candidate Invitation (Stage 1), Interview Completion Receipt (Stage 2), and Recruiter Next-Round Advancement (Stage 3).
+- **Three-Stage Transactional Email Lifecycle**: Fully automated, reliable SMTP delivery across Candidate Invitation (Stage 1), Interview Completion Receipt (Stage 2), and Recruiter Next-Round Advancement (Stage 3).
 - **Zero Autonomous Rejections**: The AI system is structurally restricted from issuing rejections autonomously. Human recruiters retain sole authority over final hiring decisions.
 
 ---
@@ -25,191 +26,249 @@ TalentPilot AI resolves these systemic bottlenecks through a collaborative multi
 
 ### 2.1 System Architecture Topology
 
-The application is structured into three isolated tiers:
+The application is structured into five decoupled tiers:
 1. **Presentation Tier**: Vite 8, React 19, TypeScript, Tailwind CSS, and Framer Motion providing a widescreen Bento-Grid Recruiter Command Center and an isolated, distraction-free Candidate Assessment Portal.
-2. **Application Tier**: FastAPI (Python 3.12) asynchronous engine coordinating six specialized AI agents, document sanitization, authentication middleware, and transactional email dispatch.
-3. **Data Tier**: SQLite / PostgreSQL managed via SQLAlchemy ORM with foreign key constraints, connection pooling, and immutable audit logging.
+2. **API Gateway & Security Tier**: FastAPI asynchronous application handling JWT authentication, role-based access control, SHA-256 cryptographic session validation, and prompt injection delimiter sanitization.
+3. **Multi-Agent Orchestration Tier**: 10 specialized Gemini 2.5 Flash agents coordinating interview planning, real-time depth coaching, consistency checking, per-question honest evaluations, adversarial critique, cross-candidate calibration, recruiter copilot queries, and executive memo generation.
+4. **Foundation AI Engine**: Google Gemini 2.5 Flash with structured Pydantic schema validation and deterministic failover engines ensuring zero system downtime.
+5. **Persistence & Communication Tier**: Relational database (SQLite / PostgreSQL) via SQLAlchemy ORM, immutable audit logging, secure document storage, and STARTTLS transactional SMTP email services.
 
 ```mermaid
 flowchart TD
     subgraph ClientLayer ["Client Presentation Tier"]
-        AdminUI["Recruiter Command Center<br/>(Widescreen Bento Grid UI)"]
-        CandidateUI["Candidate Assessment Portal<br/>(/interview/:token)"]
+        AdminUI["Recruiter Command Center (Bento Grid UI)"]
+        CandidateUI["Candidate Assessment Portal (/interview/:token)"]
     end
 
-    subgraph GatewayLayer ["API Gateway & Security Boundary"]
-        FastAPIApp["FastAPI REST Application (:8000)"]
-        AuthMiddleware["JWT Bearer Authentication & Role Guard"]
-        CryptoGuard["SHA-256 Token Hash Validator"]
-        Sanitizer["Prompt Injection Delimiter Shield"]
+    subgraph SecurityLayer ["API Gateway & Security Boundary"]
+        FastAPIGateway["FastAPI REST Application (:8000)"]
+        AuthGuard["JWT Bearer Authentication & RBAC Guard"]
+        TokenGuard["SHA-256 Token Hash Verifier"]
+        SanitizerGuard["Prompt Injection Delimiter Shield"]
     end
 
-    subgraph AgentSwarm ["Collaborative Multi-Agent Orchestration Layer"]
-        Planner["Agent 1: Planner Agent<br/>(JD & Resume Grounding)"]
-        Interviewer["Agent 2: Adaptive Interviewer<br/>(Scenario Delivery & Progression)"]
-        Consistency["Agent 3: Consistency Analyst<br/>(Resume vs Answer Fact-Checking)"]
-        Evaluator["Agent 4: Rubric Evaluator<br/>(Verbatim Quote Extraction)"]
-        Critic["Agent 5: Adversarial Critic<br/>(Confidence Score & Escalation)"]
-        Feedback["Agent 6: Feedback Agent<br/>(Candidate Guidance)"]
+    subgraph OrchestrationLayer ["Autonomous Multi-Agent Orchestration Engine"]
+        Orchestrator["Agent Swarm Coordinator"]
+        AgentPlanner["Agent 1: Planner Agent (JD & Resume Grounding)"]
+        AgentInterviewer["Agent 2: Adaptive Interviewer (Session Delivery)"]
+        AgentConsistency["Agent 3: Consistency Analyst (Claim Fact-Checking)"]
+        AgentEvaluator["Agent 4: Honest Evaluator (0.0-5.0 & Quote Engine)"]
+        AgentCritic["Agent 5: Adversarial Critic (Confidence & Escalation)"]
+        AgentFeedback["Agent 6: Constructive Feedback Agent (Growth Pathways)"]
+        AgentCalibration["Agent 7: Calibration Agent (Cross-Candidate Ranking)"]
+        AgentCopilot["Agent 8: Recruiter Copilot (Natural Language Query)"]
+        AgentDebrief["Agent 9: Executive Memo Generator (Hiring Briefs)"]
+        AgentCoach["Agent 10: Real-Time Depth Coach (Candidate Guidance)"]
     end
 
-    subgraph LLMService ["AI Foundation Engine"]
-        GeminiFlash["Google Gemini 2.5 Flash<br/>(Structured Pydantic Outputs)"]
-        DeterministicFallback["Deterministic Failover Engine<br/>(Zero-Downtime Guarantee)"]
+    subgraph FoundationLayer ["AI Foundation & Failover Engine"]
+        GeminiFlash["Google Gemini 2.5 Flash (Structured Pydantic JSON)"]
+        FallbackEngine["Deterministic Failover Engine (Zero Downtime)"]
     end
 
-    subgraph StorageLayer ["Data Persistence & Communication Tier"]
-        DB[(Relational Database<br/>SQLite / PostgreSQL)]
-        SMTPServer["Gmail / Enterprise SMTP Server<br/>(TLS Port 587)"]
-        DocStorage["Local / S3 Document Storage<br/>(PDF / DOCX Resumes)"]
+    subgraph PersistenceLayer ["Persistence & Communication Infrastructure"]
+        PrimaryDB[("Relational Database (SQLite / PostgreSQL)")]
+        AuditLedger[("Immutable Audit Ledger (audit_events)")]
+        SMTPServer["Transactional Email Service (Gmail / SMTP TLS)"]
+        DocumentStore[("Secure Document Storage (PDF / DOCX Resumes)")]
     end
 
-    AdminUI --> AuthMiddleware --> FastAPIApp
-    CandidateUI --> CryptoGuard --> FastAPIApp
-    FastAPIApp --> Sanitizer
-    Sanitizer --> AgentSwarm
-    AgentSwarm <--> GeminiFlash
-    GeminiFlash -.->|On Network/Rate Failure| DeterministicFallback
-    FastAPIApp --> DB
-    FastAPIApp --> SMTPServer
-    FastAPIApp --> DocStorage
-```
+    AdminUI --> AuthGuard
+    AuthGuard --> FastAPIGateway
+    CandidateUI --> TokenGuard
+    TokenGuard --> FastAPIGateway
 
----
+    FastAPIGateway --> SanitizerGuard
+    SanitizerGuard --> Orchestrator
 
-### 2.2 End-to-End Recruitment Lifecycle
+    Orchestrator --> AgentPlanner
+    Orchestrator --> AgentInterviewer
+    Orchestrator --> AgentConsistency
+    Orchestrator --> AgentEvaluator
+    Orchestrator --> AgentCritic
+    Orchestrator --> AgentFeedback
+    Orchestrator --> AgentCalibration
+    Orchestrator --> AgentCopilot
+    Orchestrator --> AgentDebrief
+    Orchestrator --> AgentCoach
 
-The following sequence illustrates the complete lifecycle from campaign creation and candidate resume ingestion to candidate interview submission, AI evidence synthesis, and human recruiter decision dispatch:
+    AgentPlanner --> GeminiFlash
+    AgentConsistency --> GeminiFlash
+    AgentEvaluator --> GeminiFlash
+    AgentCritic --> GeminiFlash
+    AgentFeedback --> GeminiFlash
+    AgentCalibration --> GeminiFlash
+    AgentCopilot --> GeminiFlash
+    AgentDebrief --> GeminiFlash
+    AgentCoach --> GeminiFlash
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Recruiter as Corporate Recruiter (HR)
-    participant AdminUI as Recruiter Command Center
-    participant API as FastAPI REST Gateway
-    participant Ingest as Gemini Document Parser
-    participant Planner as Planner AI Agent
-    participant DB as Relational Database
-    participant SMTP as Transactional Email Service
-    actor Candidate as Candidate
-    participant Portal as Candidate Portal UI
-    participant Evaluator as Multi-Agent Evaluation Swarm
+    GeminiFlash -.-> FallbackEngine
 
-    Recruiter->>AdminUI: Upload Candidate Resume (PDF/DOCX)
-    AdminUI->>API: POST /api/v1/candidates/upload-resume
-    API->>Ingest: Extract text & parse structured metadata
-    Ingest-->>AdminUI: Pre-populate Name, Email, Title, Skills, Summary
-    Recruiter->>AdminUI: Confirm & Register Candidate Profile
-    AdminUI->>API: POST /api/v1/candidates
-    API->>Planner: Generate 8 Resume-Grounded Questions
-    Planner->>DB: Persist Candidate & InterviewPlan (8 Questions)
-    API->>DB: Generate 32-Byte Cryptographic Token & Hash
-    API->>SMTP: Dispatch Stage 1 Personalized Invitation Email
-    SMTP-->>Candidate: Delivery: Portal Link & Credentials
-    
-    Candidate->>Portal: Opens /interview/:token
-    Portal->>API: GET /api/v1/portal/session?token=...
-    API->>DB: Validate SHA-256 Token Hash
-    API-->>Portal: Deliver Welcome Guide & Question Syllabus
-    Candidate->>Portal: Confirms AI Disclosure & Begins
-    loop 8 Sequential Assessment Questions
-        Portal->>API: POST /api/v1/portal/answers (Draft Autosave)
-        API->>DB: Upsert Answer Record
-    end
-    Candidate->>Portal: Finalize Assessment Submission
-    Portal->>API: POST /api/v1/portal/submit
-    API->>SMTP: Dispatch Stage 2 Completion Confirmation Email
-    SMTP-->>Candidate: Delivery: Answers Secured Confirmation
-    
-    API->>Evaluator: Trigger Multi-Agent Synthesis (Consistency, Evaluator, Critic)
-    Evaluator->>DB: Persist CandidateEvaluation, Quotes & Findings
-    
-    Recruiter->>AdminUI: Open Candidate Intelligence Dossier
-    AdminUI->>API: GET /api/v1/candidates/:id
-    API-->>AdminUI: Deliver Full Evidence Scorecard & Verbatim Quotes
-    Recruiter->>AdminUI: Record Final Decision (ADVANCE) & Rationale
-    AdminUI->>API: POST /api/v1/candidates/:id/decision
-    API->>DB: Commit FinalDecision & Transition to REVIEWED
-    API->>SMTP: Dispatch Stage 3 Next-Round Advancement Email
-    SMTP-->>Candidate: Delivery: Advancement News & Next Round Steps
+    FastAPIGateway --> PrimaryDB
+    FastAPIGateway --> AuditLedger
+    FastAPIGateway --> SMTPServer
+    FastAPIGateway --> DocumentStore
 ```
 
 ---
 
 ## 3. Low-Level Design (LLD)
 
-### 3.1 Multi-Agent Engine Architecture
+### 3.1 Multi-Agent Execution Pipeline
 
-TalentPilot AI implements a discrete, separation-of-concerns multi-agent swarm. Each agent operates under strict system instructions, specialized domain knowledge, and deterministic Pydantic schema validation.
+The assessment and evaluation lifecycle progresses through five discrete, verifiable pipeline stages:
 
+```mermaid
+flowchart TD
+    subgraph IngestionStage ["1. Ingestion & Pre-Processing"]
+        RawResume["Raw Resume (PDF / DOCX)"]
+        DocParser["Gemini Document Parser"]
+        ClaimExtractor["Claim Extraction Engine"]
+        CleanClaims["Normalized Resume Claims & Experience Profile"]
+    end
+
+    subgraph PlanningStage ["2. Scenario Grounding & Question Generation"]
+        TargetJD["Job Description & Competency Matrix"]
+        PlannerEngine["Planner Agent (Gemini 2.5 Flash)"]
+        PlanGenerator["8-Question Adaptive Interview Plan"]
+    end
+
+    subgraph ExecutionStage ["3. Cryptographic Session & Candidate Assessment"]
+        TokenGen["Crypto Entropy Generator (32-Byte Secret)"]
+        HashToken["SHA-256 Token Hash Stored in DB"]
+        CandidateSession["Candidate Portal Session (/interview/:token)"]
+        AutosaveDraft["Real-Time Answer Autosave & Depth Coach"]
+        SubmissionEvent["Final Candidate Submission Event"]
+    end
+
+    subgraph SynthesisStage ["4. Multi-Agent Evaluation & Evidence Synthesis"]
+        AnswerTranscript["Normalized Candidate Transcript"]
+        ConsistencyWorker["Consistency Analyst Agent"]
+        EvaluatorWorker["Honest Evaluator Agent (0.0 - 5.0 Scoring)"]
+        PerQuestionAudit["Per-Question Deep Evidence & Quote Review"]
+        CriticWorker["Adversarial Critic Agent"]
+        ConfidenceCheck{"Confidence >= 0.70 & Score outside 2.8 - 3.4?"}
+        AutoVerify["Status: VERIFIED (High Evidence Grounding)"]
+        HumanEscalate["Status: FLAG_FOR_HUMAN_REVIEW (Escalated)"]
+        FeedbackWorker["Feedback & Debrief Agent"]
+    end
+
+    subgraph DecisionStage ["5. Recruiter Governance & Transactional Lifecycle"]
+        EvidenceDossier["Candidate Intelligence Dossier (8-Tab Dashboard)"]
+        RecruiterAction["Recruiter Review & Final Decision Sign-Off"]
+        Stage3Email["Stage 3: Advancement Email Dispatched (SMTP)"]
+        AuditRecord["Tamper-Evident Audit Record Committed"]
+    end
+
+    RawResume --> DocParser
+    DocParser --> ClaimExtractor
+    ClaimExtractor --> CleanClaims
+
+    CleanClaims --> PlannerEngine
+    TargetJD --> PlannerEngine
+    PlannerEngine --> PlanGenerator
+
+    PlanGenerator --> TokenGen
+    TokenGen --> HashToken
+    HashToken --> CandidateSession
+    CandidateSession --> AutosaveDraft
+    AutosaveDraft --> SubmissionEvent
+
+    SubmissionEvent --> AnswerTranscript
+    AnswerTranscript --> ConsistencyWorker
+    AnswerTranscript --> EvaluatorWorker
+    EvaluatorWorker --> PerQuestionAudit
+    PerQuestionAudit --> CriticWorker
+    ConsistencyWorker --> CriticWorker
+
+    CriticWorker --> ConfidenceCheck
+    ConfidenceCheck -- Yes --> AutoVerify
+    ConfidenceCheck -- No --> HumanEscalate
+
+    AutoVerify --> FeedbackWorker
+    HumanEscalate --> FeedbackWorker
+
+    FeedbackWorker --> EvidenceDossier
+    EvidenceDossier --> RecruiterAction
+    RecruiterAction --> Stage3Email
+    RecruiterAction --> AuditRecord
 ```
-+-----------------------------------------------------------------------------------+
-|                           MULTI-AGENT SWARM TOPOLOGY                              |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  [Planner Agent]        Extracts JD competencies, cross-references candidate       |
-|                         resume projects, and drafts strictly 8 progressive        |
-|                         technical scenarios (Junior, Mid, Senior balance).        |
-|                                |                                                  |
-|                                v                                                  |
-|  [Interviewer Agent]    Executes candidate onboarding, delivers resume-grounded    |
-|                         questions, manages time allowances, and validates input.  |
-|                                |                                                  |
-|                                v                                                  |
-|  [Consistency Agent]    Compares candidate answers against specific claims in the |
-|                         resume. Highlights verified claims or discrepancies.      |
-|                                |                                                  |
-|                                v                                                  |
-|  [Evaluator Agent]      Applies 5-tier scoring rubrics. Attaches verbatim quote    |
-|                         citations from candidate answers to justify every rating. |
-|                                |                                                  |
-|                                v                                                  |
-|  [Critic Agent]         Adversarially checks evaluator findings. Detects rubric   |
-|                         drift, assigns confidence metrics, and flags reviews.     |
-|                                |                                                  |
-|                                v                                                  |
-|  [Feedback Agent]       Synthesizes candidate communication, positive attributes,  |
-|                         growth recommendations, and constructive debrief notes.   |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
-```
-
-#### Detailed Agent Specifications
-
-1. **Planner Agent (`planner_agent.py`)**:
-   - **Input**: Target Job Title, Raw Job Description, Candidate Name, Full Resume Text.
-   - **Output**: `InterviewPlanResult` containing exactly 8 `QuestionPlanItem` objects.
-   - **Guarantees**: Categorizes questions across Technical Architecture, Data Storage & Concurrency, Production Incident Debugging, CI/CD Quality Assurance, and System Leadership. Every question directly cites the candidate's actual resume items.
-
-2. **Adaptive Interviewer Agent (`interviewer_agent.py`)**:
-   - **Input**: Active Question, Candidate Response String, Current Progression Index.
-   - **Output**: Progression State, Word Count Analytics, Autosave Acknowledgments.
-   - **Guarantees**: Ensures smooth asynchronous test flow with zero question count drift.
-
-3. **Consistency Analyst Agent (`consistency_agent.py`)**:
-   - **Input**: Resume Claim List, Transcribed Candidate Answers.
-   - **Output**: `ConsistencyAnalysisResult` containing verified claims, flags, and confidence ratings.
-   - **Guarantees**: Identifies whether candidate answers substantively support the technical depth asserted on their resume.
-
-4. **Answer Evaluator Agent (`evaluator_agent.py`)**:
-   - **Input**: Competency Matrix, Question List, Complete Transcribed Answers.
-   - **Output**: `EvaluationSynthesisResult` containing Dimension Scores (1.0 - 5.0 scale), Overall Weighted Score, and Verbatim Quote Evidence Citations.
-   - **Guarantees**: Disallows ungrounded scores. Every rating must cite the candidate's exact sentences.
-
-5. **Adversarial Critic Agent (`critic_agent.py`)**:
-   - **Input**: Evaluator Output, Rubric Parameters, Consistency Findings.
-   - **Output**: `CriticReviewResult` containing Verification Status (`VERIFIED` or `DISCREPANCY_DETECTED`), Confidence Score (0.0 - 1.0), and Human Review Requirement Flag.
-   - **Guarantees**: Automatically flags borderline ratings (scores between 2.8 and 3.4) or low evidence quote density for mandatory human recruiter inspection.
-
-6. **Candidate Feedback Agent (`feedback_agent.py`)**:
-   - **Input**: Candidate Profile, Overall Performance Vectors, Role Requirements.
-   - **Output**: Constructive candidate feedback notes, growth vectors, and respectful interview conclusion summaries.
 
 ---
 
-### 3.2 Database Schema & Entity-Relationship Diagram (ERD)
+### 3.2 End-to-End Orchestration Sequence Diagram
 
-The data model enforces relational integrity, cascade constraints, and immutable audit tracking:
+The following sequence illustrates the three-stage lifecycle spanning resume upload, candidate invitation, portal assessment, automated multi-agent synthesis, and recruiter next-round advancement:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Recruiter as Corporate Recruiter (HR)
+    participant AdminUI as Recruiter Command Center
+    participant Gateway as FastAPI REST Gateway
+    participant IngestService as Document & Resume Parser
+    participant PlannerAgent as Planner AI Agent
+    participant DB as Relational Database
+    participant SmtpService as Transactional Email Service
+    actor Candidate as Candidate
+    participant PortalUI as Candidate Portal UI
+    participant AgentSwarm as Multi-Agent Evaluation Swarm
+
+    Recruiter->>AdminUI: Upload Resume (PDF or DOCX)
+    AdminUI->>Gateway: POST /api/v1/candidates/upload-resume
+    Gateway->>IngestService: Extract text and parse structured candidate profile
+    IngestService-->>AdminUI: Pre-populate Name, Email, Title, Skills, and Summary
+    Recruiter->>AdminUI: Confirm and Register Candidate
+    AdminUI->>Gateway: POST /api/v1/candidates
+    Gateway->>PlannerAgent: Generate 8 Resume-Grounded Technical Scenarios
+    PlannerAgent-->>Gateway: Structured Interview Plan (8 Questions)
+    Gateway->>DB: Persist Candidate, Resume Claims, and Questions
+    Gateway->>DB: Generate 32-Byte Cryptographic Token and Store SHA-256 Hash
+    Gateway->>SmtpService: Dispatch Stage 1 Personalized Invitation Email
+    SmtpService-->>Candidate: Delivery: Candidate Credentials and Portal URL
+
+    Candidate->>PortalUI: Open Unique Portal Link (/interview/:token)
+    PortalUI->>Gateway: GET /api/v1/portal/session?token=...
+    Gateway->>DB: Validate SHA-256 Token Hash and Session Expiry
+    DB-->>Gateway: Session Active
+    Gateway-->>PortalUI: Deliver Candidate Guide and Question Syllabus
+    Candidate->>PortalUI: Accept AI Transparency Disclosure and Start
+    loop 8 Resume-Grounded Questions
+        Candidate->>PortalUI: Draft Technical Answer
+        PortalUI->>Gateway: POST /api/v1/portal/answers (Real-Time Autosave)
+        Gateway->>DB: Upsert Answer Record
+        opt Real-Time Coaching
+            PortalUI->>Gateway: POST /api/v1/portal/analyze-depth
+            Gateway-->>PortalUI: Return Technical Depth Guidance
+        end
+    end
+    Candidate->>PortalUI: Confirm and Finalize Assessment Submission
+    PortalUI->>Gateway: POST /api/v1/portal/submit
+    Gateway->>DB: Mark Session Status as SUBMITTED
+    Gateway->>SmtpService: Dispatch Stage 2 Completion Confirmation Email
+    SmtpService-->>Candidate: Delivery: Answers Secured Confirmation Receipt
+
+    Gateway->>AgentSwarm: Trigger Multi-Agent Synthesis (Consistency, Evaluator, Critic)
+    AgentSwarm->>AgentSwarm: Perform Per-Question Evidence Audit and Honest 0.0-5.0 Scoring
+    AgentSwarm->>AgentSwarm: Verify Resume Claims and Check Adversarial Bias
+    AgentSwarm->>DB: Persist CandidateEvaluation, Evidence Quotes, and Reviews
+
+    Recruiter->>AdminUI: Access Candidate Intelligence Dossier
+    AdminUI->>Gateway: GET /api/v1/candidates/:id
+    Gateway->>DB: Fetch Full Evidence Scorecard and Per-Question Audits
+    Gateway-->>AdminUI: Render Complete 8-Tab Dossier
+    Recruiter->>AdminUI: Record Final Human Decision (ADVANCE) and Rationale
+    AdminUI->>Gateway: POST /api/v1/candidates/:id/decision
+    Gateway->>DB: Record FinalDecision and Update Candidate Status
+    Gateway->>SmtpService: Dispatch Stage 3 Next-Round Advancement Email
+    SmtpService-->>Candidate: Delivery: Advancement Notice and Next Steps
+```
+
+---
+
+### 3.3 Database Relational Entity-Relationship Diagram (ERD)
+
+The data model enforces relational integrity, cascade constraints, foreign keys, and immutable audit tracking:
 
 ```mermaid
 erDiagram
@@ -291,6 +350,8 @@ erDiagram
         string question_id FK
         string answer_text
         int word_count
+        float ai_score
+        string ai_review
         datetime saved_at
     }
 
@@ -300,6 +361,7 @@ erDiagram
         float overall_score
         string recommendation
         json competency_scores
+        json per_question_reviews
         datetime evaluated_at
     }
 
@@ -315,40 +377,126 @@ erDiagram
 
 ---
 
-### 3.3 REST API Interface Specifications
+## 4. The 10-Agent Autonomous Swarm Specification
 
-The backend exposes an OpenAPI 3.1 compliant contract structured under `/api/v1`:
+TalentPilot AI implements 10 discrete, single-responsibility AI agents powered by Google Gemini 2.5 Flash. Each agent operates with tailored system prompts, domain knowledge boundaries, and Pydantic schema validation.
 
-| Method | Endpoint | Description | Auth Requirement |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/v1/auth/login` | Authenticate recruiter via JSON body (`admin` or email) | Public |
-| `GET` | `/api/v1/auth/me` | Fetch active authenticated recruiter profile | Bearer Token |
-| `POST` | `/api/v1/auth/change-password` | Update recruiter password with old password verification | Bearer Token |
-| `GET` | `/api/v1/candidates` | List candidate pipeline with filtering & decision flags | Bearer Token |
-| `POST` | `/api/v1/candidates` | Register candidate profile and generate 8-question plan | Bearer Token |
-| `POST` | `/api/v1/candidates/upload-resume`| Gemini AI structured resume extraction (PDF/DOCX) | Optional Bearer |
-| `GET` | `/api/v1/candidates/{id}` | Retrieve comprehensive candidate intelligence dossier | Bearer Token |
-| `POST` | `/api/v1/candidates/{id}/decision`| Record final recruiter decision and dispatch Stage 3 email | Bearer Token |
-| `GET` | `/api/v1/portal/session` | Validate cryptographic token and fetch candidate onboarding | Token Param |
-| `POST` | `/api/v1/portal/consent` | Record candidate AI disclosure consent and timestamp | Token Param |
-| `POST` | `/api/v1/portal/start` | Transition assessment session to IN_PROGRESS | Token Param |
-| `GET` | `/api/v1/portal/interview` | Retrieve active question and autosaved response draft | Token Param |
-| `POST` | `/api/v1/portal/answers` | Submit question response with real-time cloud autosave | Token Param |
-| `POST` | `/api/v1/portal/submit` | Finalize assessment, trigger multi-agent evaluation, send Stage 2 | Token Param |
-| `POST` | `/api/v1/portal/reset-demo` | Reset test candidate interview session to question 1 | Token Param |
-| `GET` | `/api/v1/dashboard/summary` | Retrieve KPI metrics, active counts, and velocity | Bearer Token |
-| `GET` | `/api/v1/dashboard/activity` | Stream immutable compliance audit events | Bearer Token |
+| # | Agent Name | Module File | Primary Inputs | System Directives | Primary Outputs |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **1** | **Planner Agent** | `planner_agent.py` | Resume text, JD, Competencies | Parse candidate background; generate strictly 8 progressive scenarios directly referencing candidate past projects and metrics. | `InterviewPlanResult` (8 `QuestionPlanItem` objects with difficulty tiers) |
+| **2** | **Adaptive Interviewer** | `interviewer_agent.py` | Active question, Candidate answer draft | Manage question delivery, progressive state tracking, word count analytics, autosave persistence. | Session Progression State, autosave acknowledgments, step timing |
+| **3** | **Consistency Analyst** | `consistency_agent.py` | Resume claims, Full interview transcript | Cross-examine answers against specific claims on the candidate resume. Flag claims that lack depth or exhibit contradictions. | `ConsistencyAnalysisResult` (Verified claims, discrepancies, confidence scores) |
+| **4** | **Honest Evaluator** | `evaluator_agent.py` | Competency matrix, Transcript, Questions | Grade on an honest 0.0 to 5.0 scale. Enforce strict grading: award 0.0 for blank or irrelevant text, 0.5-1.5 for superficial buzzwords. Extract verbatim quotes for every question. | `EvaluationSynthesisResult` (Overall score, dimension scores, evidence quotes, per-question reviews) |
+| **5** | **Adversarial Critic** | `critic_agent.py` | Evaluator output, Rubrics, Findings | Adversarially audit evaluator outputs. Detect score inflation, check evidence quote density, and automatically escalate borderline cases (2.8 to 3.4) to human recruiters. | `CriticReviewResult` (Confidence score, verification status, human review flag) |
+| **6** | **Constructive Feedback** | `feedback_agent.py` | Candidate profile, Performance vectors | Generate actionable, encouraging candidate growth recommendations, specific strengths, and technical learning paths. | Constructive feedback notes, growth vectors, conclusion summary |
+| **7** | **Calibration Agent** | `calibration_agent.py` | All campaign candidates, Evaluator scores | Compute percentile rank, standard deviation, cohort benchmark comparison, and relative stack ranking across the applicant pool. | `CalibrationResult` (Percentile, cohort rank, benchmark variance, stack tier) |
+| **8** | **Recruiter Copilot** | `copilot_agent.py` | Natural language recruiter prompt, Dossier | Answer freeform questions from the recruiter regarding candidate systems trade-offs, edge cases, and code quality using transcript quotes. | Natural language briefing with verbatim quote references and follow-up recommendations |
+| **9** | **Executive Memo Agent** | `debrief_agent.py` | Full candidate evaluation & profile | Synthesize an executive-ready 1-page briefing memo summarizing candidate technical posture, risk profile, and hiring manager talking points. | Executive memo with Executive Summary, Architectural Strengths, Risk Factors, and Interview Questions |
+| **10** | **Candidate Depth Coach** | `coach_agent.py` | Live draft response, Active question | Analyze candidate draft text in real time. Provide constructive hints on missing dimensions (e.g. failure modes, trade-offs, benchmarks) without giving away answers. | `DepthCoachResult` (Depth tier, missing engineering considerations, elaboration prompt) |
 
 ---
 
-## 4. Frontend Architecture & Design System
+## 5. Strict Honest Scoring Policy (0.0 – 5.0 Scale)
+
+Unlike standard generative models that inflate ratings to avoid critical assessments, TalentPilot AI enforces a strict, calibrated scoring rubric:
+
+| Score Band | Classification | Criteria & Engineering Demonstration | Engine Action |
+| :--- | :--- | :--- | :--- |
+| **0.0 - 0.4** | **Unsatisfactory / Irrelevant** | Candidate submitted empty text, single-word dismissals, completely unrelated content, or non-technical evasion. | Strictly assigned 0.0. Flagged as zero evidence. |
+| **0.5 - 1.5** | **Superficial / Buzzwords** | Candidate dropped high-level terminology (e.g. "Kafka", "Microservices", "Docker") without explaining architecture, data flow, failure modes, or rationale. | Low score assigned. Review notes explicit lack of operational depth. |
+| **1.6 - 2.5** | **Basic / Novice** | High-level conceptual awareness with significant technical gaps. Explains what a tool does but cannot explain internal mechanisms, trade-offs, or edge cases. | Assigned basic score. Verbatim quotes highlight missing dimensions. |
+| **2.6 - 3.4** | **Competent / Borderline** | Satisfactory baseline solution. Covers standard patterns but omits production nuances (e.g. backpressure, consensus failures, split-brain, data loss recovery). | Flagged by Critic Agent for mandatory human recruiter review. |
+| **3.5 - 4.4** | **Strong / Senior** | In-depth production engineering. Identifies concrete failure modes, concurrency bottlenecks, trade-offs, monitoring metrics, and operational trade-offs. | Solid score backed by verbatim architectural quote citations. |
+| **4.5 - 5.0** | **Mastery / Staff+** | Flawless technical mastery. Discusses distributed consensus invariants, quantitative benchmarks, zero-downtime migrations, and enterprise-scale organizational impact. | Top-tier score justified with comprehensive quote citations. |
+
+### Verbatim Evidence Quotes Enforcement
+
+Every score recorded in `candidate_evaluations` is backed by `evaluation_evidence` records containing:
+- `competency`: Specific evaluated skill (e.g. Distributed Consensus, Concurrency, High-Throughput Ingestion).
+- `quote`: Exact verbatim substring extracted from the candidate's transcribed answer.
+- `context`: Assessment scenario context where the claim was asserted.
+- `sentiment`: Evaluator sentiment (`POSITIVE`, `CONCERN`, `NEUTRAL`).
+
+---
+
+## 6. Automated Three-Stage Transactional Email Lifecycle
+
+TalentPilot AI provides a production-tested, three-stage automated email notification system utilizing Python `smtplib` over TLS (Port 587) with clean, high-contrast HTML email templates:
+
+```mermaid
+flowchart LR
+    CandidateRegister["Candidate Registration"] --> Stage1["Stage 1: Invitation Email<br/>(Magic Link & Token)"]
+    Stage1 --> CandidateTakesTest["Assessment In Progress"]
+    CandidateTakesTest --> CandidateSubmits["Candidate Submits Assessment"]
+    CandidateSubmits --> Stage2["Stage 2: Completion Receipt<br/>(Answers Secured Notice)"]
+    CandidateSubmits --> MultiAgentAudit["Multi-Agent Synthesis & Scorecard"]
+    MultiAgentAudit --> RecruiterDossier["Recruiter Dossier Review"]
+    RecruiterDossier --> HumanDecision["Recruiter Advances Candidate"]
+    HumanDecision --> Stage3["Stage 3: Advancement Notice<br/>(Next Steps & Preparation)"]
+```
+
+1. **Stage 1: Candidate Assessment Invitation**:
+   - **Trigger**: Dispatched immediately upon candidate profile creation or via manual "Email Credentials" action.
+   - **Payload**: Candidate full name, target role title, expiration window (7 days), active URL link, and unique access credentials.
+   - **Template**: High-contrast corporate dark-accent theme with a direct "Start Assessment" action button.
+
+2. **Stage 2: Candidate Submission Receipt**:
+   - **Trigger**: Dispatched automatically when candidate clicks "Finalize & Submit Interview" (`POST /api/v1/portal/submit`).
+   - **Payload**: Confirmation of secured responses, SHA-256 session confirmation hash, and transparent timeline of hiring team evaluation.
+   - **Template**: Reassuring confirmation notice informing the candidate that their multi-agent evaluation is underway.
+
+3. **Stage 3: Recruiter Next-Round Advancement**:
+   - **Trigger**: Dispatched when a human recruiter reviews the candidate's intelligence dossier and commits an `ADVANCE` decision (`POST /api/v1/candidates/{id}/decision`).
+   - **Payload**: Formal advancement news, personalized next-round briefing, interview preparation guidelines, and recruiter notes.
+   - **Template**: Clean celebration layout with actionable next steps for the candidate.
+
+---
+
+## 7. REST API Interface Reference Matrix
+
+The backend exposes an OpenAPI 3.1 compliant REST API structured under `/api/v1`:
+
+| Category | Method | Endpoint | Description | Authentication |
+| :--- | :--- | :--- | :--- | :--- |
+| **Authentication** | `POST` | `/api/v1/auth/login` | Authenticate recruiter via JSON body (`admin` or email) | Public |
+| **Authentication** | `GET` | `/api/v1/auth/me` | Fetch active authenticated recruiter profile | Bearer Token |
+| **Authentication** | `POST` | `/api/v1/auth/change-password` | Update recruiter password with old password verification | Bearer Token |
+| **Candidates** | `GET` | `/api/v1/candidates` | List candidate pipeline with filtering & decision flags | Bearer Token |
+| **Candidates** | `POST` | `/api/v1/candidates` | Register candidate profile and generate 8-question plan | Bearer Token |
+| **Candidates** | `POST` | `/api/v1/candidates/upload-resume`| Gemini AI structured resume extraction (PDF/DOCX) | Optional Bearer |
+| **Candidates** | `GET` | `/api/v1/candidates/{id}` | Retrieve comprehensive candidate intelligence dossier | Bearer Token |
+| **Candidates** | `POST` | `/api/v1/candidates/{id}/decision`| Record final recruiter decision and dispatch Stage 3 email | Bearer Token |
+| **Candidates** | `POST` | `/api/v1/candidates/{id}/re-evaluate`| Re-run multi-agent evaluation and per-question honest audits | Bearer Token |
+| **Candidates** | `GET` | `/api/v1/candidates/{id}/executive-memo`| Generate 1-page executive hiring memo for leadership | Bearer Token |
+| **Campaigns** | `GET` | `/api/v1/campaigns` | List all hiring campaigns with candidate counts | Bearer Token |
+| **Campaigns** | `POST` | `/api/v1/campaigns` | Create new hiring campaign with JD and competencies | Bearer Token |
+| **Campaigns** | `GET` | `/api/v1/campaigns/{id}` | Retrieve campaign details and enrolled candidates | Bearer Token |
+| **Campaigns** | `GET` | `/api/v1/campaigns/{id}/calibration`| Cross-candidate cohort calibration and stack ranking | Bearer Token |
+| **Copilot** | `POST` | `/api/v1/copilot/query` | Ask natural language intelligence questions about candidate | Bearer Token |
+| **Portal** | `GET` | `/api/v1/portal/session` | Validate cryptographic token and fetch candidate onboarding | Token Query Param |
+| **Portal** | `POST` | `/api/v1/portal/consent` | Record candidate AI disclosure consent and timestamp | Token Query Param |
+| **Portal** | `POST` | `/api/v1/portal/start` | Transition assessment session to IN_PROGRESS | Token Query Param |
+| **Portal** | `GET` | `/api/v1/portal/interview` | Retrieve active question and autosaved response draft | Token Query Param |
+| **Portal** | `POST` | `/api/v1/portal/answers` | Submit question response with real-time cloud autosave | Token Query Param |
+| **Portal** | `POST` | `/api/v1/portal/analyze-depth` | Get real-time depth guidance and coaching for draft answer | Token Query Param |
+| **Portal** | `POST` | `/api/v1/portal/submit` | Finalize assessment, trigger multi-agent evaluation, send Stage 2 | Token Query Param |
+| **Portal** | `POST` | `/api/v1/portal/reset-demo` | Reset test candidate interview session to question 1 | Token Query Param |
+| **Invitations** | `GET` | `/api/v1/invitations` | List all generated candidate invitations and token hashes | Bearer Token |
+| **Invitations** | `POST` | `/api/v1/invitations/{id}/resend` | Resend Stage 1 credentials email to candidate | Bearer Token |
+| **Interviews** | `GET` | `/api/v1/interviews/sessions` | Monitor real-time status of all active candidate sessions | Bearer Token |
+| **Dashboard** | `GET` | `/api/v1/dashboard/summary` | Retrieve KPI metrics, active counts, and pipeline velocity | Bearer Token |
+| **Reports** | `GET` | `/api/v1/reports/compliance` | Generate compliance audit report for AI hiring standards | Bearer Token |
+
+---
+
+## 8. Frontend Architecture & Design System
 
 The frontend is constructed using a high-performance modern web stack without bloated CSS frameworks:
 - **Framework**: React 19 with TypeScript in strict mode.
 - **Styling Architecture**: Tailwind CSS with custom design tokens, sub-pixel borders (`border-slate-200/90`), backdrop blur layers (`backdrop-blur-md`), and typography configured in `font-display` and `font-mono`.
-- **Widescreen Canvas**: Admin panels utilize an expansive `max-w-[1750px]` container layout replacing narrow standard containers.
-- **Micro-Interactions**: Framer Motion orchestration (`initial`, `animate`, `whileHover={{ y: -3 }}`) with subtle shadow transitions and canvas-confetti celebration triggers.
-- **Data Visualizations**: Recharts integration with custom gradient fills, responsive tooltips, and tick formatters.
+- **Widescreen Bento Grid**: Admin panels utilize an expansive `max-w-[1750px]` container layout with visual information density, metric cards, and responsive side panels.
+- **Micro-Interactions**: Framer Motion orchestration (`initial`, `animate`, `whileHover={{ y: -3 }}`) with subtle shadow transitions and canvas-confetti celebration triggers upon candidate advancement.
+- **Data Visualizations**: Recharts integration with custom gradient fills, responsive tooltips, and tick formatters across Funnel Analytics, Score Distribution, Candidate Velocity, and Competency Radars.
 
 ### Frontend Module Layout
 
@@ -371,7 +519,7 @@ frontend/src/
 |   +-- admin/
 |       |-- DashboardOverview.tsx   # Bento-Grid Command Center with Hero KPIs & Selected Fast-Track
 |       |-- CandidatesList.tsx      # Candidate Pipeline with multi-tab filters and resume ingestion
-|       |-- CandidateDetail.tsx     # 8-Tab Candidate Intelligence Dossier and Human Decision room
+|       |-- CandidateDetail.tsx     # 8-Tab Candidate Intelligence Dossier with Per-Question Audits
 |       |-- CampaignAnalytics.tsx   # Recruitment Analytics: Funnel, Velocity, Benchmarks, Score Tiers
 |       |-- CampaignWizard.tsx      # 6-step campaign creation wizard with JD parsing
 |       |-- CampaignsList.tsx       # Active campaigns workspace view
@@ -384,9 +532,9 @@ frontend/src/
 
 ---
 
-## 5. Security, Isolation & Compliance Governance
+## 9. Security, Isolation & Compliance Governance
 
-### 5.1 Candidate Isolation Boundary
+### 9.1 Candidate Isolation Boundary
 
 Candidate security is enforced at the protocol and data layers:
 1. **Cryptographic Entropy**: Candidate invitation tokens are generated using `secrets.token_urlsafe(32)`, yielding over 256 bits of entropy.
@@ -394,22 +542,22 @@ Candidate security is enforced at the protocol and data layers:
 3. **Session Binding**: An interview session is strictly bound to one candidate identifier and one hiring campaign. Cross-tenant access attempts immediately fail validation.
 4. **Token Invalidation**: Links transition through an immutable lifecycle: `ISSUED` -> `OPENED` -> `REDEEMED` -> `EXPIRED` / `REVOKED`.
 
-### 5.2 Prompt Injection Neutralizer
+### 9.2 Prompt Injection Neutralizer
 
 Untrusted inputs (such as candidate resumes and freeform answers) are processed through `DocumentService.sanitize_untrusted_text`:
 - Strips delimiter collision attempts.
 - Replaces known injection phrases (`ignore previous instructions`, `you are now a different agent`, `disregard prior guidelines`) with strict sanitization tokens.
 - Encloses text in explicit system delimiters before passing to foundation model prompts.
 
-### 5.3 Tamper-Evident Audit Logging
+### 9.3 Tamper-Evident Audit Logging
 
 All administrative operations, logins, candidate creations, evaluations, and password updates are permanently recorded in the `audit_events` ledger via `AuditService.log()`. Each record stores the actor identifier, timestamp, action type, resource reference, and structured change context.
 
 ---
 
-## 6. Installation & Quickstart Guide
+## 10. Installation & Quickstart Guide
 
-### 6.1 Prerequisites
+### 10.1 Prerequisites
 
 - **Python**: Version 3.11 or 3.12
 - **Node.js**: Version 18.x or 20.x with npm
@@ -419,7 +567,7 @@ All administrative operations, logins, candidate creations, evaluations, and pas
 
 ---
 
-### 6.2 Local Development Setup
+### 10.2 Local Development Setup
 
 #### Step 1: Clone Repository
 ```bash
@@ -492,7 +640,7 @@ Access the application in your browser:
 
 ---
 
-### 6.3 Pre-Configured Administrator Credentials
+### 10.3 Pre-Configured Administrator Credentials
 
 For evaluation and testing, the platform includes pre-seeded administrator access:
 
@@ -505,7 +653,7 @@ For evaluation and testing, the platform includes pre-seeded administrator acces
 
 ---
 
-### 6.4 Docker Deployment
+### 10.4 Docker Deployment
 
 The platform is fully containerized using Docker and Docker Compose:
 
@@ -522,7 +670,7 @@ docker-compose logs -f
 
 ---
 
-## 7. Verification & Synthetic Candidate Personas
+## 11. Verification & Synthetic Candidate Personas
 
 TalentPilot AI includes pre-generated synthetic technical resumes located in `resumes/` and `test-data/resumes/` representing varied experience levels and edge cases:
 
@@ -551,7 +699,7 @@ python test_e2e_verification.py
 
 ---
 
-## 8. Technology Stack Summary
+## 12. Technology Stack Summary
 
 | Domain | Technology | Version | Purpose |
 | :--- | :--- | :--- | :--- |
@@ -573,7 +721,7 @@ python test_e2e_verification.py
 
 ---
 
-## 9. License & Governance Notice
+## 13. License & Governance Notice
 
 TalentPilot AI is distributed under the Apache-2.0 License.
 
