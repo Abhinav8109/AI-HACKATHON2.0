@@ -7,7 +7,7 @@ from app.models.user import User
 from app.models.campaign import HiringCampaign, CampaignStatus
 from app.models.candidate import Candidate
 from app.models.interview import InterviewInvitation, InterviewSession, SessionStatus, InvitationStatus
-from app.models.assessment import CandidateEvaluation
+from app.models.assessment import CandidateEvaluation, FinalDecision
 from app.models.audit import AuditEvent
 from app.schemas.dashboard import DashboardSummaryResponse, ActivityFeedItem
 from app.auth.dependencies import get_current_user
@@ -45,6 +45,16 @@ def get_dashboard_summary(
 
     recent_evals = db.query(CandidateEvaluation).count()
 
+    # Recruiter human decision metrics
+    all_decisions = db.query(FinalDecision).order_by(FinalDecision.recorded_at.desc()).all()
+    latest_decision_by_cand = {}
+    for d in all_decisions:
+        if d.candidate_id not in latest_decision_by_cand:
+            latest_decision_by_cand[d.candidate_id] = d.decision
+
+    approved_count = sum(1 for dec in latest_decision_by_cand.values() if dec in ["ADVANCE", "NEXT_ROUND", "APPROVED", "HIRED"])
+    rejected_count = sum(1 for dec in latest_decision_by_cand.values() if dec in ["REJECT", "REJECTED"])
+
     return DashboardSummaryResponse(
         active_campaigns=active_campaigns,
         total_candidates=total_candidates,
@@ -56,6 +66,8 @@ def get_dashboard_summary(
         expiring_invitations=expiring,
         recent_assessments_count=recent_evals,
         average_score=avg_score_val,
+        approved_candidates=approved_count,
+        rejected_candidates=rejected_count,
         is_demo_data=False
     )
 

@@ -29,7 +29,9 @@ import {
   Copy,
   Award,
   UploadCloud,
-  CheckCircle
+  CheckCircle,
+  XCircle,
+  UserX
 } from 'lucide-react';
 import { apiRequest } from '../../api/client';
 import { AdminHeader } from '../../components/AdminHeader';
@@ -46,6 +48,8 @@ interface DashboardSummary {
   expiring_invitations: number;
   recent_assessments_count: number;
   average_score: number | null;
+  approved_candidates?: number;
+  rejected_candidates?: number;
 }
 
 interface ActivityItem {
@@ -66,6 +70,7 @@ export const DashboardOverview: React.FC = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
+  const [decisionTab, setDecisionTab] = useState<'APPROVED' | 'REJECTED'>('APPROVED');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [actionNotice, setActionNotice] = useState<string | null>(null);
 
@@ -102,8 +107,14 @@ export const DashboardOverview: React.FC = () => {
         c.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         c.current_title?.toLowerCase().includes(searchQuery.toLowerCase());
       
+      const isAppr = c.decision && ['ADVANCE', 'NEXT_ROUND', 'APPROVED', 'HIRED'].includes(c.decision.toUpperCase());
+      const isRej = c.decision && ['REJECT', 'REJECTED'].includes(c.decision.toUpperCase());
+
       const matchesStatus =
         statusFilter === 'ALL' ||
+        (statusFilter === 'APPROVED' && isAppr) ||
+        (statusFilter === 'REJECTED' && isRej) ||
+        (statusFilter === 'PENDING' && (c.status === 'COMPLETED' || c.status === 'EVALUATED') && !c.decision) ||
         (statusFilter === 'INVITED' && c.status === 'INVITED') ||
         (statusFilter === 'IN_PROGRESS' && c.status === 'IN_PROGRESS') ||
         (statusFilter === 'COMPLETED' && (c.status === 'COMPLETED' || c.status === 'EVALUATED' || c.status === 'REVIEWED')) ||
@@ -313,20 +324,32 @@ export const DashboardOverview: React.FC = () => {
             </div>
           </div>
 
-          <div className="p-3">
-            <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider font-mono">Real-Time Autosave Rate</div>
-            <div className="text-2xl font-black text-indigo-600 mt-1 font-mono">99.9%</div>
-            <div className="w-full bg-slate-100 rounded-full h-1.5 mt-2 overflow-hidden">
-              <div className="bg-indigo-600 h-1.5 rounded-full" style={{ width: '99.9%' }}></div>
+          <div
+            onClick={() => setStatusFilter('APPROVED')}
+            className="p-3 cursor-pointer hover:bg-emerald-50/50 rounded-xl transition-colors"
+          >
+            <div className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider font-mono flex items-center justify-between">
+              <span>Human Approved</span>
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
             </div>
+            <div className="text-2xl font-black text-emerald-600 mt-1 font-mono">
+              {summary?.approved_candidates ?? candidates.filter(c => c.decision && ['ADVANCE', 'NEXT_ROUND', 'APPROVED', 'HIRED'].includes(c.decision.toUpperCase())).length}
+            </div>
+            <div className="text-[10px] text-emerald-700 font-medium mt-1">Stage 3 advancement sent</div>
           </div>
 
-          <div className="p-3">
-            <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider font-mono">Bias Audits Passed</div>
-            <div className="text-2xl font-black text-slate-900 mt-1 font-mono">100%</div>
-            <div className="w-full bg-slate-100 rounded-full h-1.5 mt-2 overflow-hidden">
-              <div className="bg-teal-500 h-1.5 rounded-full" style={{ width: '100%' }}></div>
+          <div
+            onClick={() => setStatusFilter('REJECTED')}
+            className="p-3 cursor-pointer hover:bg-rose-50/50 rounded-xl transition-colors"
+          >
+            <div className="text-[11px] font-bold text-rose-700 uppercase tracking-wider font-mono flex items-center justify-between">
+              <span>Human Rejected</span>
+              <XCircle className="w-3.5 h-3.5 text-rose-600" />
             </div>
+            <div className="text-2xl font-black text-rose-600 mt-1 font-mono">
+              {summary?.rejected_candidates ?? candidates.filter(c => c.decision && ['REJECT', 'REJECTED'].includes(c.decision.toUpperCase())).length}
+            </div>
+            <div className="text-[10px] text-rose-700 font-medium mt-1">Recruiter human sign-off</div>
           </div>
         </div>
 
@@ -371,20 +394,45 @@ export const DashboardOverview: React.FC = () => {
                 />
               </div>
 
-              <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0">
-                {['ALL', 'INVITED', 'IN_PROGRESS', 'COMPLETED', 'REVIEW'].map((st) => (
-                  <button
-                    key={st}
-                    onClick={() => setStatusFilter(st)}
-                    className={`px-3 py-1 rounded-lg text-xs font-medium transition-all shrink-0 ${
-                      statusFilter === st
-                        ? 'bg-indigo-600 text-white font-semibold shadow-xs'
-                        : 'bg-slate-100/80 text-slate-600 hover:bg-slate-200/80'
-                    }`}
-                  >
-                    {st.replace('_', ' ')}
-                  </button>
-                ))}
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+                {[
+                  { id: 'ALL', label: 'All' },
+                  { id: 'APPROVED', label: 'Approved', badge: candidates.filter(c => c.decision && ['ADVANCE', 'NEXT_ROUND', 'APPROVED', 'HIRED'].includes(c.decision.toUpperCase())).length, color: 'emerald' },
+                  { id: 'REJECTED', label: 'Rejected', badge: candidates.filter(c => c.decision && ['REJECT', 'REJECTED'].includes(c.decision.toUpperCase())).length, color: 'rose' },
+                  { id: 'PENDING', label: 'Pending HR', color: 'amber' },
+                  { id: 'IN_PROGRESS', label: 'In Progress', color: 'indigo' },
+                  { id: 'COMPLETED', label: 'Completed', color: 'slate' }
+                ].map((st) => {
+                  const isActive = statusFilter === st.id;
+                  return (
+                    <button
+                      key={st.id}
+                      onClick={() => setStatusFilter(st.id)}
+                      className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all shrink-0 flex items-center gap-1.5 ${
+                        isActive
+                          ? st.id === 'APPROVED'
+                            ? 'bg-emerald-600 text-white shadow-xs'
+                            : st.id === 'REJECTED'
+                            ? 'bg-rose-600 text-white shadow-xs'
+                            : 'bg-indigo-600 text-white shadow-xs'
+                          : st.id === 'APPROVED'
+                          ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100'
+                          : st.id === 'REJECTED'
+                          ? 'bg-rose-50 text-rose-800 border border-rose-200 hover:bg-rose-100'
+                          : 'bg-slate-100/80 text-slate-600 hover:bg-slate-200/80'
+                      }`}
+                    >
+                      <span>{st.label}</span>
+                      {st.badge !== undefined && (
+                        <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                          isActive ? 'bg-white/20 text-white' : 'bg-slate-200/80 text-slate-700'
+                        }`}>
+                          {st.badge}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -401,8 +449,9 @@ export const DashboardOverview: React.FC = () => {
                     <tr className="border-b border-slate-200 text-slate-400 font-mono text-[11px]">
                       <th className="pb-3.5 font-bold">Candidate</th>
                       <th className="pb-3.5 font-bold">Target Role</th>
-                      <th className="pb-3.5 font-bold">Status</th>
+                      <th className="pb-3.5 font-bold">Pipeline Status</th>
                       <th className="pb-3.5 font-bold">Evidence Score</th>
+                      <th className="pb-3.5 font-bold">Recruiter Decision</th>
                       <th className="pb-3.5 font-bold text-right">Actions</th>
                     </tr>
                   </thead>
@@ -455,6 +504,31 @@ export const DashboardOverview: React.FC = () => {
                             )}
                           </td>
 
+                          <td className="py-3.5 pr-3">
+                            {c.decision && ['ADVANCE', 'NEXT_ROUND', 'APPROVED', 'HIRED'].includes(c.decision.toUpperCase()) ? (
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold border border-emerald-300">
+                                <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                                <span>Approved</span>
+                              </span>
+                            ) : c.decision && ['REJECT', 'REJECTED'].includes(c.decision.toUpperCase()) ? (
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800 text-[11px] font-bold border border-rose-300">
+                                <XCircle className="w-3 h-3 text-rose-600" />
+                                <span>Rejected</span>
+                              </span>
+                            ) : c.decision?.toUpperCase() === 'HOLD' ? (
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold border border-amber-300">
+                                <span>On Hold</span>
+                              </span>
+                            ) : (c.status === 'COMPLETED' || c.status === 'EVALUATED') ? (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-[10px] font-medium border border-amber-200">
+                                <Clock className="w-2.5 h-2.5 text-amber-600" />
+                                <span>Pending HR</span>
+                              </span>
+                            ) : (
+                              <span className="text-slate-400 font-mono text-[10px]">In Progress</span>
+                            )}
+                          </td>
+
                           <td className="py-3.5 text-right space-x-1 shrink-0">
                             {portalUrl && (
                               <a
@@ -493,56 +567,132 @@ export const DashboardOverview: React.FC = () => {
 
           {/* RIGHT COLUMN: SELECTED CANDIDATES FAST-TRACK + RECRUITER ACTIONS (4 cols) */}
           <div className="lg:col-span-4 space-y-6">
-            {/* SELECTED CANDIDATES FAST-TRACK CARD */}
+            {/* HUMAN RECRUITER DECISION LEDGER (APPROVED VS REJECTED) */}
             <div className="rounded-2xl bg-white border border-slate-200/90 p-6 shadow-xs space-y-4">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-bold text-slate-900 font-display flex items-center gap-2">
-                    <Award className="w-4.5 h-4.5 text-emerald-600" />
-                    Selected for Next Round
+                    <Award className="w-4.5 h-4.5 text-indigo-600" />
+                    Recruiter Decision Ledger
                   </h3>
-                  <p className="text-[11px] text-slate-500">Candidates approved by HR for advancement</p>
+                  <p className="text-[11px] text-slate-500">Human recruiter approval & rejection records</p>
                 </div>
-                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                  {candidates.filter(c => c.decision === 'ADVANCE').length} ADVANCED
-                </span>
+                <Link
+                  to="/admin/interviews"
+                  className="text-[10px] font-mono font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-0.5"
+                >
+                  Live Monitor <ChevronRight className="w-3 h-3" />
+                </Link>
               </div>
 
+              {/* DUAL TABS: APPROVED VS REJECTED */}
+              <div className="flex rounded-xl bg-slate-100 p-1 text-xs font-semibold">
+                <button
+                  onClick={() => setDecisionTab('APPROVED')}
+                  className={`flex-1 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                    decisionTab === 'APPROVED'
+                      ? 'bg-emerald-600 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>Approved ({candidates.filter(c => c.decision && ['ADVANCE', 'NEXT_ROUND', 'APPROVED', 'HIRED'].includes(c.decision.toUpperCase())).length})</span>
+                </button>
+                <button
+                  onClick={() => setDecisionTab('REJECTED')}
+                  className={`flex-1 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                    decisionTab === 'REJECTED'
+                      ? 'bg-rose-600 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <XCircle className="w-3.5 h-3.5" />
+                  <span>Rejected ({candidates.filter(c => c.decision && ['REJECT', 'REJECTED'].includes(c.decision.toUpperCase())).length})</span>
+                </button>
+              </div>
+
+              {/* LIST OF CANDIDATES BASED ON ACTIVE TAB */}
               <div className="space-y-3">
-                {candidates.filter(c => c.decision === 'ADVANCE').length === 0 ? (
-                  <div className="p-5 rounded-xl bg-slate-50 text-center text-xs text-slate-500">
-                    No candidates marked for advancement yet. Review candidate dossiers to advance top talent.
-                  </div>
-                ) : (
-                  candidates
-                    .filter(c => c.decision === 'ADVANCE')
-                    .slice(0, 4)
-                    .map((sc) => (
-                      <div key={sc.id} className="p-3.5 rounded-xl bg-emerald-50/50 border border-emerald-200/80 flex items-center justify-between hover:border-emerald-300 transition-colors">
-                        <div className="min-w-0 pr-2">
-                          <div className="font-bold text-slate-900 text-xs flex items-center gap-1.5 truncate">
-                            <span>{sc.full_name}</span>
-                            <Sparkles className="w-3 h-3 text-emerald-600 shrink-0" />
+                {decisionTab === 'APPROVED' ? (
+                  candidates.filter(c => c.decision && ['ADVANCE', 'NEXT_ROUND', 'APPROVED', 'HIRED'].includes(c.decision.toUpperCase())).length === 0 ? (
+                    <div className="p-5 rounded-xl bg-slate-50 text-center text-xs text-slate-500">
+                      No candidates marked for advancement yet. Review candidate dossiers to advance top talent.
+                    </div>
+                  ) : (
+                    candidates
+                      .filter(c => c.decision && ['ADVANCE', 'NEXT_ROUND', 'APPROVED', 'HIRED'].includes(c.decision.toUpperCase()))
+                      .slice(0, 4)
+                      .map((sc) => (
+                        <div key={sc.id} className="p-3.5 rounded-xl bg-emerald-50/50 border border-emerald-200/80 flex items-center justify-between hover:border-emerald-300 transition-colors">
+                          <div className="min-w-0 pr-2">
+                            <div className="font-bold text-slate-900 text-xs flex items-center gap-1.5 truncate">
+                              <span>{sc.full_name}</span>
+                              <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
+                            </div>
+                            <div className="text-[11px] text-slate-600 truncate">{sc.current_title || 'Software Engineer'}</div>
+                            {sc.decision_rationale ? (
+                              <div className="text-[10px] text-slate-500 truncate mt-0.5 italic">
+                                "{sc.decision_rationale}"
+                              </div>
+                            ) : null}
+                            <div className="text-[10px] text-emerald-700 font-mono mt-0.5 flex items-center gap-2">
+                              <span>Score: {sc.overall_score ? `${sc.overall_score.toFixed(1)} / 5.0` : 'Evaluated'}</span>
+                              <span className="font-semibold text-emerald-800">• Stage 3 Sent</span>
+                            </div>
                           </div>
-                          <div className="text-[11px] text-slate-600 truncate">{sc.current_title || 'Software Engineer'}</div>
-                          <div className="text-[10px] text-emerald-700 font-mono mt-0.5">
-                            Score: {sc.overall_score ? `${sc.overall_score.toFixed(1)} / 5.0` : 'Evaluated'}
-                          </div>
+                          <Link
+                            to={`/admin/candidates/${sc.id}`}
+                            className="px-3 py-1.5 rounded-lg bg-white border border-emerald-200 hover:bg-emerald-50 text-emerald-800 text-xs font-semibold shrink-0 shadow-2xs"
+                          >
+                            Dossier
+                          </Link>
                         </div>
-                        <Link
-                          to={`/admin/candidates/${sc.id}`}
-                          className="px-3 py-1.5 rounded-lg bg-white border border-emerald-200 hover:bg-emerald-50 text-emerald-800 text-xs font-semibold shrink-0 shadow-2xs"
-                        >
-                          Dossier
-                        </Link>
-                      </div>
-                    ))
+                      ))
+                  )
+                ) : (
+                  candidates.filter(c => c.decision && ['REJECT', 'REJECTED'].includes(c.decision.toUpperCase())).length === 0 ? (
+                    <div className="p-5 rounded-xl bg-slate-50 text-center text-xs text-slate-500">
+                      No candidates rejected yet.
+                    </div>
+                  ) : (
+                    candidates
+                      .filter(c => c.decision && ['REJECT', 'REJECTED'].includes(c.decision.toUpperCase()))
+                      .slice(0, 4)
+                      .map((rc) => (
+                        <div key={rc.id} className="p-3.5 rounded-xl bg-rose-50/50 border border-rose-200/80 flex items-center justify-between hover:border-rose-300 transition-colors">
+                          <div className="min-w-0 pr-2">
+                            <div className="font-bold text-slate-900 text-xs flex items-center gap-1.5 truncate">
+                              <span>{rc.full_name}</span>
+                              <XCircle className="w-3 h-3 text-rose-600 shrink-0" />
+                            </div>
+                            <div className="text-[11px] text-slate-600 truncate">{rc.current_title || 'Software Engineer'}</div>
+                            {rc.decision_rationale ? (
+                              <div className="text-[10px] text-slate-500 truncate mt-0.5 italic">
+                                "{rc.decision_rationale}"
+                              </div>
+                            ) : null}
+                            <div className="text-[10px] text-rose-700 font-mono mt-0.5">
+                              Score: {rc.overall_score ? `${rc.overall_score.toFixed(1)} / 5.0` : 'Evaluated'} • Archived
+                            </div>
+                          </div>
+                          <Link
+                            to={`/admin/candidates/${rc.id}`}
+                            className="px-3 py-1.5 rounded-lg bg-white border border-rose-200 hover:bg-rose-50 text-rose-800 text-xs font-semibold shrink-0 shadow-2xs"
+                          >
+                            Dossier
+                          </Link>
+                        </div>
+                      ))
+                  )
                 )}
               </div>
 
-              <div className="pt-2 border-t border-slate-100 text-center">
-                <Link to="/admin/candidates" className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 transition-colors inline-flex items-center gap-1">
-                  <span>View All In Candidates Pipeline</span>
+              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                <Link
+                  to="/admin/interviews"
+                  className="font-semibold text-indigo-700 hover:text-indigo-800 transition-colors inline-flex items-center gap-1"
+                >
+                  <span>Open Live Interview Monitor</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>

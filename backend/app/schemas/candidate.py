@@ -66,6 +66,8 @@ class CandidateResponse(BaseModel):
     interview_status: str = "NOT_STARTED"
     overall_score: float | None = None
     decision: str | None = None
+    decision_rationale: str | None = None
+    decision_date: datetime | None = None
 
     class Config:
         from_attributes = True

@@ -65,8 +65,10 @@ def list_candidates(
         has_inv = len(c.invitations) > 0
         int_status = c.interview_session.status if c.interview_session else "NOT_STARTED"
         score = c.evaluation.overall_score if c.evaluation else None
-        final_dec = db.query(FinalDecision).filter(FinalDecision.candidate_id == c.id).first()
+        final_dec = db.query(FinalDecision).filter(FinalDecision.candidate_id == c.id).order_by(FinalDecision.recorded_at.desc()).first()
         dec_str = final_dec.decision if final_dec else None
+        dec_rat = final_dec.rationale if final_dec else None
+        dec_date = final_dec.recorded_at if final_dec else None
 
         results.append(CandidateResponse(
             id=c.id,
@@ -85,7 +87,9 @@ def list_candidates(
             has_invitation=has_inv,
             interview_status=int_status,
             overall_score=score,
-            decision=dec_str
+            decision=dec_str,
+            decision_rationale=dec_rat,
+            decision_date=dec_date
         ))
     return results
 

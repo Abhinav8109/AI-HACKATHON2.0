@@ -33,6 +33,7 @@ def list_interviews(
         candidate = s.candidate
         campaign = candidate.campaign
         evaluation = candidate.evaluation
+        final_dec = db.query(FinalDecision).filter(FinalDecision.candidate_id == candidate.id).order_by(FinalDecision.recorded_at.desc()).first()
         results.append({
             "id": s.id,
             "candidate_id": candidate.id,
@@ -48,7 +49,11 @@ def list_interviews(
             "current_question_index": s.current_question_index,
             "overall_score": evaluation.overall_score if evaluation else None,
             "recommendation": evaluation.recommendation if evaluation else None,
-            "human_review_required": evaluation.human_review_required if evaluation else False
+            "human_review_required": evaluation.human_review_required if evaluation else False,
+            "decision": final_dec.decision if final_dec else None,
+            "decision_rationale": final_dec.rationale if final_dec else None,
+            "decision_date": final_dec.recorded_at.isoformat() if final_dec and final_dec.recorded_at else None,
+            "decision_by": final_dec.recorded_by.full_name if final_dec and final_dec.recorded_by else None
         })
     return results
 

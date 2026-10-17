@@ -13,6 +13,8 @@ class DashboardSummaryResponse(BaseModel):
     expiring_invitations: int
     recent_assessments_count: int
     average_score: float | None = None
+    approved_candidates: int = 0
+    rejected_candidates: int = 0
     is_demo_data: bool = False
 
 class ActivityFeedItem(BaseModel):
