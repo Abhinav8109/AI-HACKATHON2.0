@@ -75,9 +75,20 @@ def health_check(db: Session = Depends(get_db)):
     }
 
 # Check for production built frontend dist
-dist_path = Path(__file__).resolve().parent.parent.parent / "frontend" / "dist"
-if not dist_path.exists():
-    dist_path = Path(__file__).resolve().parent.parent / "dist"
+dist_candidates = [
+    Path(__file__).resolve().parent.parent.parent / "frontend" / "dist",
+    Path(__file__).resolve().parent.parent / "frontend" / "dist",
+    Path(__file__).resolve().parent.parent / "dist",
+    Path("/app/frontend/dist"),
+    Path("/app/dist"),
+    Path("frontend/dist"),
+    Path("dist")
+]
+dist_path = None
+for candidate in dist_candidates:
+    if candidate.exists() and (candidate / "index.html").exists():
+        dist_path = candidate
+        break
 
 if dist_path.exists():
     assets_path = dist_path / "assets"
