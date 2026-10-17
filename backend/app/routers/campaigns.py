@@ -194,3 +194,44 @@ async def analyze_campaign_jd(
     db.commit()
     db.refresh(matrix)
     return matrix
+
+@router.get("/{campaign_id}/calibration")
+async def get_campaign_calibration(
+    campaign_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Autonomous Talent Calibration Agent:
+    Ranks and comparatively calibrates all evaluated candidates under this campaign.
+    """
+    from app.services.agents.calibration_agent import CalibrationAgent
+    from app.models.assessment import FinalDecision
+
+    campaign = db.query(HiringCampaign).filter(HiringCampaign.id == campaign_id).first()
+    if not campaign:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+
+    candidates = db.query(Candidate).filter(Candidate.campaign_id == campaign_id).all()
+    cands_data = []
+    for c in candidates:
+        score = c.evaluation.overall_score if c.evaluation else None
+        quotes = [ev.evidence_quote for ev in c.evaluation.evidence_items if ev.evidence_quote] if c.evaluation and c.evaluation.evidence_items else []
+        final_dec = db.query(FinalDecision).filter(FinalDecision.candidate_id == c.id).first()
+        cands_data.append({
+            "id": c.id,
+            "full_name": c.full_name,
+            "current_title": c.current_title,
+            "skills": c.skills or [],
+            "overall_score": score,
+            "decision": final_dec.decision if final_dec else None,
+            "summary": c.summary or "",
+            "evidence_quotes": quotes
+        })
+
+    calibration = await CalibrationAgent.calibrate_campaign_candidates(
+        campaign_title=campaign.title,
+        job_title=campaign.job_title,
+        candidates_data=cands_data
+    )
+    return calibration

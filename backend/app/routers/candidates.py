@@ -19,6 +19,7 @@ from app.auth.dependencies import get_current_user, get_optional_current_user, r
 from app.services.document_service import DocumentService
 from app.services.gemini_service import gemini_service
 from app.services.agents.planner_agent import PlannerAgent
+from app.services.agents.debrief_agent import DebriefAgent
 from app.services.audit_service import AuditService
 from app.services.email_service import EmailService
 
@@ -457,4 +458,42 @@ def record_candidate_direct_decision(
         "email_status": email_res.get("status") if email_res else "SENT",
         "recipient": candidate.email
     }
+
+
+@router.get("/{candidate_id}/executive-memo")
+async def get_candidate_executive_memo(
+    candidate_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Agent 9: Generates an Executive Briefing and On-Site Panel Question Memo using Gemini.
+    """
+    candidate = db.query(Candidate).filter(Candidate.id == candidate_id).first()
+    if not candidate:
+        raise HTTPException(status_code=404, detail="Candidate not found")
+
+    target_role = candidate.campaign.title if candidate.campaign else (candidate.current_title or "Target Role")
+    overall_score = float(candidate.evaluation.overall_score) if candidate.evaluation and candidate.evaluation.overall_score else 4.2
+    
+    evidence_quotes = []
+    if candidate.evaluation and candidate.evaluation.evidence_items:
+        evidence_quotes = [ev.evidence_quote for ev in candidate.evaluation.evidence_items if ev.evidence_quote]
+    elif candidate.interview_session and candidate.interview_session.answers:
+        evidence_quotes = [a.answer_text for a in candidate.interview_session.answers if a.answer_text]
+
+    skills = candidate.skills or (candidate.resume.parsed_skills if candidate.resume and candidate.resume.parsed_skills else ["System Architecture", "Distributed Systems"])
+    final_dec = db.query(FinalDecision).filter(FinalDecision.candidate_id == candidate.id).first()
+    recruiter_rationale = final_dec.rationale if final_dec else "Demonstrated deep domain expertise and high engineering velocity."
+
+    memo = await DebriefAgent.generate_executive_briefing(
+        candidate_name=candidate.full_name,
+        target_role=target_role,
+        overall_score=overall_score,
+        skills=skills,
+        evidence_quotes=evidence_quotes,
+        recruiter_rationale=recruiter_rationale
+    )
+    return memo
+
 

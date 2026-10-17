@@ -12,7 +12,7 @@ from app.config import settings
 from app.database import engine, Base, get_db
 from app.fixtures.seed_data import seed_database
 from app.routers import (
-    auth, campaigns, candidates, invitations, portal, interviews, dashboard, reports, audit
+    auth, campaigns, candidates, invitations, portal, interviews, dashboard, reports, audit, copilot
 )
 
 # Create all database tables
@@ -55,6 +55,7 @@ app.include_router(interviews.router, prefix=settings.API_V1_PREFIX)
 app.include_router(dashboard.router, prefix=settings.API_V1_PREFIX)
 app.include_router(reports.router, prefix=settings.API_V1_PREFIX)
 app.include_router(audit.router, prefix=settings.API_V1_PREFIX)
+app.include_router(copilot.router, prefix=settings.API_V1_PREFIX)
 
 @app.get("/health", tags=["Health"])
 def health_check(db: Session = Depends(get_db)):

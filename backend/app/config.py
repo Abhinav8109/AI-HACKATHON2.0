@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR}/talentpilot.db")
     
     # Gemini AI Configuration
-    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", os.getenv("API_KEY", ""))
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
     GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
     
     # Storage & Uploads

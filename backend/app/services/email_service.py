@@ -12,6 +12,7 @@ from app.models.interview import InterviewInvitation, InterviewSession
 from app.models.candidate import Candidate
 from app.models.campaign import HiringCampaign
 from app.models.assessment import FinalDecision, CandidateEvaluation
+from app.services.gemini_service import gemini_service
 
 class EmailService:
     @staticmethod
@@ -71,6 +72,29 @@ class EmailService:
     # ==========================================
     # 1. INVITATION & CREDENTIALS EMAIL
     # ==========================================
+    @classmethod
+    def generate_ai_recruiter_note(cls, candidate_name: str, job_title: str, skills: list[str]) -> str:
+        """
+        Uses Gemini to generate an authentic, warm, and highly personalized introductory note
+        tailored to the candidate's exact technical profile.
+        """
+        try:
+            skills_str = ", ".join(skills[:5]) if skills else "engineering excellence"
+            prompt = f"""
+            Write a concise, highly professional 2-sentence personal note from the Talent Lead to {candidate_name} for the {job_title} role.
+            Mention genuine appreciation for their background in {skills_str}.
+            Tone: Warm, executive, encouraging. Do not use generic buzzwords.
+            """
+            result = gemini_service.generate_text_sync(
+                prompt=prompt,
+                system_instruction="You are Sarah Chen, Lead Talent Partner. Output only the note text with no quotes."
+            )
+            if result and len(result.strip()) > 10:
+                return result.strip().strip('"')
+        except Exception as e:
+            print(f"[EmailService] AI note generation fallback: {e}")
+        return f"We reviewed your notable background in {', '.join(skills[:3]) if skills else 'distributed systems'} and are excited to see how your architectural skills align with our {job_title} team goals."
+
     @classmethod
     def generate_invitation_email_html(
         cls,
@@ -611,6 +635,10 @@ TalentPilot AI
         job_role = campaign.job_title or campaign.title or "Software Engineer"
         subject = f"Interview Invitation: {job_role} - {company}"
 
+        if not custom_note:
+            skills = candidate.resume.skills_list if candidate.resume and candidate.resume.skills_list else []
+            custom_note = cls.generate_ai_recruiter_note(candidate.full_name, job_role, skills)
+
         html_content = cls.generate_invitation_email_html(
             candidate_name=candidate.full_name,
             job_title=job_role,
@@ -845,6 +873,8 @@ TalentPilot AI
         custom_note: str | None = None
     ) -> dict:
         subject = f"Interview Credentials: {job_title} - TalentPilot AI"
+        if not custom_note:
+            custom_note = cls.generate_ai_recruiter_note(recipient_name, job_title, [])
         html_content = cls.generate_invitation_email_html(
             candidate_name=recipient_name,
             job_title=job_title,

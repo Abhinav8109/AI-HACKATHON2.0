@@ -63,4 +63,45 @@ class GeminiService:
                 logger.warning(f"Structured Gemini call failed: {e}. Using deterministic agent fallback.")
         return None
 
+    def generate_text_sync(self, prompt: str, system_instruction: str = "") -> str:
+        if self.client:
+            try:
+                response = self.client.models.generate_content(
+                    model=settings.GEMINI_MODEL,
+                    contents=prompt,
+                    config={
+                        "system_instruction": system_instruction,
+                        "temperature": 0.2
+                    }
+                )
+                if response and response.text:
+                    return response.text
+            except Exception as e:
+                logger.error(f"Gemini generation error: {e}. Falling back to deterministic agent.")
+        return ""
+
+    def generate_structured_sync(
+        self,
+        prompt: str,
+        response_schema: Type[BaseModel],
+        system_instruction: str = ""
+    ) -> BaseModel | dict | None:
+        if self.client:
+            try:
+                response = self.client.models.generate_content(
+                    model=settings.GEMINI_MODEL,
+                    contents=prompt,
+                    config={
+                        "system_instruction": system_instruction,
+                        "response_mime_type": "application/json",
+                        "response_schema": response_schema,
+                        "temperature": 0.1
+                    }
+                )
+                if response and response.text:
+                    return response_schema.model_validate_json(response.text)
+            except Exception as e:
+                logger.warning(f"Structured Gemini call failed: {e}. Using deterministic agent fallback.")
+        return None
+
 gemini_service = GeminiService()

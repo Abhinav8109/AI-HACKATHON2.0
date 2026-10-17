@@ -1,4 +1,5 @@
 from datetime import datetime
+from pydantic import BaseModel
 from fastapi import APIRouter, Depends, HTTPException, Header, status
 from sqlalchemy.orm import Session
 from app.database import get_db
@@ -21,8 +22,13 @@ from app.services.agents.evaluator_agent import EvaluatorAgent
 from app.services.agents.consistency_agent import ConsistencyAgent
 from app.services.agents.critic_agent import CriticAgent
 from app.services.agents.feedback_agent import FeedbackAgent
+from app.services.agents.coach_agent import CandidateCoachAgent
 from app.services.audit_service import AuditService
 from app.services.email_service import EmailService
+
+class AnswerDepthAnalysisRequest(BaseModel):
+    question_text: str
+    draft_answer: str
 
 router = APIRouter(prefix="/portal", tags=["Candidate Portal"])
 
@@ -401,3 +407,24 @@ def log_portal_event(
     db.add(evt)
     db.commit()
     return {"status": "ok"}
+
+
+@router.post("/analyze-depth")
+async def analyze_answer_depth(
+    request: AnswerDepthAnalysisRequest,
+    token: str,
+    db: Session = Depends(get_db)
+):
+    """
+    Agent 10: Candidate Depth Coach Agent.
+    Evaluates real-time candidate answers for architectural depth, failure modes, trade-offs, and metrics.
+    """
+    inv, session, candidate, campaign = get_portal_session_context(token, db)
+    role = campaign.job_title if campaign else (candidate.current_title or "Software Engineer")
+    analysis = await CandidateCoachAgent.analyze_draft_depth(
+        question_text=request.question_text,
+        competency=role,
+        draft_answer=request.draft_answer
+    )
+    return analysis
+
