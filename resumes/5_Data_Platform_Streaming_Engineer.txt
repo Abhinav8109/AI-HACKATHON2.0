@@ -1,0 +1,30 @@
+======================================================================
+ABHINAV VERMA
+Principal Data Platform & Streaming Engineer
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 833-9012 | Location: Chicago, IL (Remote)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Principal Data Engineer with 8+ years designing enterprise lakehouse platforms, real-time streaming pipelines, and analytical data layers. Proven success handling petabyte-scale event pipelines with Apache Flink, Kafka, Snowflake, and dbt.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+Apache Kafka, Apache Flink, Apache Spark, Python, SQL, Snowflake, dbt, Airflow, Delta Lake, Data Modeling, Streaming ETL, Data Observability
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Principal Data Platform Architect — Kinetix Data Systems (2022 - Present)
+  • Architected unified real-time streaming data ingestion engine processing 2.4 billion daily events using Apache Flink and Kafka.
+  • Designed petabyte-scale Snowflake modern data warehouse and modular dbt transformation DAGs serving 500+ analytical users.
+  • Built automated data quality observability platform with Great Expectations, preventing corrupt pipeline ingestion before downstream impact.
+  • Optimized Snowflake warehouse sizing, query clustering keys, and materialized views, decreasing monthly compute costs by $45,000.
+
+Senior Data Infrastructure Engineer — OmniStream Analytics (2017 - 2022)
+  • Built batch and streaming ETL jobs in PySpark on AWS EMR processing 50TB daily logs.
+  • Orchestrated complex enterprise workflow dependencies using Apache Airflow with custom sensors and SLA monitoring.
+  • Collaborated with ML engineering teams to build low-latency feature stores for real-time model scoring.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.S. in Information Systems, University of Illinois Urbana-Champaign (2017)

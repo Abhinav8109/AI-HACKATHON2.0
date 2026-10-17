@@ -1,0 +1,24 @@
+======================================================================
+ABHINAV RENÉ-FRANÇOIS MÜLLER
+Sr. Systems Eng. & Internationalization Lead
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 777-6655 | Location: Montréal, QC / Remote
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Senior Software Architect specializing in UTF-8 encoding, multi-lingual data pipelines (日本語, Español, Français), and internationalized high-concurrency systems. Expert in handling edge-case encodings, sanitizing unicode payloads, and preventing injection vulnerabilities.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+Python 3 (Unicode Internals), i18n & l10n, PostgreSQL (Collation & Encodings), FastAPI, Go, Docker, Zero Trust, Special Character Sanitization, UTF-8/UTF-16
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Lead i18n Systems Engineer — GlobalLingo Systems SA (2021 - Present)
+  • Designed internationalization data ingestion engine processing multi-byte CJK and Arabic RTL text flawlessly.
+  • Eliminated subtle mojibake and encoding corruption bugs across PostgreSQL database connections.
+  • Implemented rigorous character validation and normalization (NFC/NFD) in API request schemas.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.Sc. Informatique, Université de Montréal (2019)

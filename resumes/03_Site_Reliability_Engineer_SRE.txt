@@ -1,0 +1,29 @@
+======================================================================
+ABHINAV RAO
+Senior Site Reliability Engineer (SRE)
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 902-4418 | Location: Seattle, WA (Remote)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Principal Site Reliability Engineer with 7+ years optimizing system resilience, defining SLOs/SLIs, and leading incident response for mission-critical enterprise systems. Passionate about chaos engineering and reducing operational toil through automated remediation.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+SLO / SLI Design, Incident Management, Chaos Engineering, Python, Go, OpenTelemetry, Datadog, Prometheus, Kubernetes, Linux Kernel Tuning, eBPF
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Senior SRE / Observability Lead — HyperScale Fintech (2021 - Present)
+  • Formulated and implemented company-wide SLO/SLI error budget frameworks across 35 microservices.
+  • Conducted monthly chaos engineering game days (Chaos Mesh / Gremlin) to validate automated failover resilience.
+  • Engineered automated remediation bot in Python that resolved 42% of recurring alerts without human paging.
+  • Spearheaded distributed tracing rollout using OpenTelemetry and Datadog, cutting mean time to detect (MTTD) by 60%.
+
+Systems Reliability Engineer — Streamline Networks (2018 - 2021)
+  • Managed 24/7 on-call rotation for distributed streaming platforms with strict 99.995% reliability requirements.
+  • Optimized Linux TCP/IP network kernel parameters to resolve high socket churn during flash traffic spikes.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.S. in Computer Systems Engineering, University of Washington (2018)

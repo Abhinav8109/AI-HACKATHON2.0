@@ -1,0 +1,29 @@
+======================================================================
+ABHINAV GUPTA
+Senior Backend Systems Engineer (Python)
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 441-2390 | Location: New York, NY (Remote)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Senior Backend Engineer with 8 years mastering asynchronous Python (FastAPI, AsyncIO, Celery), PostgreSQL database internals, Redis caching, and distributed architecture. Proven history designing high-throughput APIs serving 50k+ requests per second.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+Python 3.12, FastAPI, AsyncIO, PostgreSQL, SQLAlchemy, Redis, Celery, Kafka, Docker, Pytest, REST / gRPC, System Architecture
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Staff Backend Engineer — Nexus Financial Core (2021 - Present)
+  • Engineered core ledger settlement API with Python FastAPI and PostgreSQL processing $12M daily transactions.
+  • Optimized database connection pooling and query plans, reducing p99 API latency from 180ms to 24ms.
+  • Constructed asynchronous task worker pipeline using Celery and Redis with distributed locking and idempotent retries.
+  • Maintained 95%+ test coverage across 80,000 lines of Python code using Pytest and factory patterns.
+
+Backend Software Engineer — DataPoint Technologies (2017 - 2021)
+  • Designed RESTful microservices with Django and FastAPI supporting 500,000 mobile app users.
+  • Implemented Redis cache layer with cache-aside and write-through strategies, slashing DB query load by 70%.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.S. in Computer Science, Columbia University (2017)

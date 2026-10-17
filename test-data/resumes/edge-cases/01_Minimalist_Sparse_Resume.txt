@@ -1,0 +1,22 @@
+======================================================================
+ABHINAV MINI
+Junior Developer
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 111-2222 | Location: Remote
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Junior software developer with 1 year experience writing Python and JavaScript.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+Python, JavaScript, Git
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Junior Programmer — Startup Co (2024 - 2025)
+  • Wrote unit tests and fixed bugs in web backend.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.S. in Computer Science (2024)

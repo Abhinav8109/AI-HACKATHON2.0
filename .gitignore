@@ -1,0 +1,35 @@
+# Environment & Secrets
+.env
+*.local
+*.secret
+
+# Python Virtualenv & Cache
+.venv/
+venv/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.log
+pytest_err.log
+
+# Node & Frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+dist-ssr/
+
+# Database files & uploads (keep seed sqlite if needed, but ignore temp uploads)
+backend/uploads/temp_*
+backend/uploads/*.tmp
+uploads/
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo

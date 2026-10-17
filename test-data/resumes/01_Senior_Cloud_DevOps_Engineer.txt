@@ -1,0 +1,30 @@
+======================================================================
+ABHINAV SHARMA
+Senior Cloud DevOps Engineer
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 721-8890 | Location: San Francisco, CA (Remote)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Senior Cloud DevOps Engineer with 8+ years designing high-availability multi-region cloud infrastructures on AWS and GCP. Expert in Infrastructure as Code (Terraform), Kubernetes cluster orchestration, zero-downtime deployment strategies, and enterprise GitOps with ArgoCD.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+AWS, GCP, Kubernetes, Docker, Terraform, ArgoCD, GitHub Actions, Prometheus, Grafana, Helm, Python, Bash, Linux Internals
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Staff Cloud Infrastructure & DevOps Lead — CloudScale Platforms Inc. (2022 - Present)
+  • Architected multi-region AWS EKS Kubernetes clusters serving 120M daily API requests with 99.99% uptime SLA.
+  • Automated end-to-end GitOps deployment pipelines using ArgoCD and GitHub Actions, cutting release cycles from 4 hours to 8 minutes.
+  • Reduced monthly AWS infrastructure spend by 34% ($48,000/mo) through spot instance optimization and Karpenter auto-scaling.
+  • Engineered multi-region disaster recovery replication with Route 53 latency routing and cross-region Aurora PostgreSQL failover.
+
+Senior DevOps Engineer — Vanguard Cloud Systems (2018 - 2022)
+  • Migrated 40+ containerized microservices from legacy on-premise hardware to Google Cloud Platform (GKE).
+  • Authored reusable Terraform modules adopted across 12 product engineering teams for compliant cloud provisioning.
+  • Implemented centralized logging and observability stacks utilizing Prometheus, Thanos, and Grafana Loki.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.S. in Computer Science, Carnegie Mellon University (2018)

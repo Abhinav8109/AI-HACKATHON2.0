@@ -1,0 +1,29 @@
+======================================================================
+ABHINAV SINGH
+Senior QA Automation & Test Lead
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 632-1109 | Location: Atlanta, GA (Remote)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Senior QA Automation Engineer with 7+ years developing automated test frameworks for complex microservice architectures and web applications. Expert in Playwright, Cypress, Pytest, REST API testing, and performance testing with k6.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+Playwright, Cypress, Python (Pytest), TypeScript, k6 Performance Testing, REST API Testing, Docker, GitHub Actions CI, Postman, Test Rail
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Lead QA Automation Engineer — QualityFirst Systems (2021 - Present)
+  • Engineered end-to-end browser automation framework in TypeScript with Playwright running 400+ parallel test specs across Chrome, Firefox, and WebKit.
+  • Integrated automated regression suites into GitHub Actions PR pipelines, catching 98% of UI regressions before staging release.
+  • Developed backend API test harness with Python Pytest and Faker, covering 100% of critical checkout and auth endpoints.
+  • Conducted stress and load testing with k6, identifying database locking bottlenecks prior to Black Friday peak.
+
+QA Automation Engineer — Apex Software Labs (2017 - 2021)
+  • Migrated legacy Selenium Java test suite to Cypress, cutting test execution duration from 90 minutes to 14 minutes.
+  • Authored automated synthetic monitoring scripts alerting team to production regression within 60 seconds.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.S. in Computer Information Systems, Georgia Tech (2017)

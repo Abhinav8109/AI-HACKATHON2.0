@@ -1,0 +1,30 @@
+======================================================================
+ABHINAV SHARMA
+Senior Distributed Systems Architect
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 392-8819 | Location: San Francisco, CA (Remote)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Senior Distributed Systems Architect with 8+ years designing fault-tolerant event-driven platforms, high-concurrency microservices, and distributed storage engines. Proven track record scaling backends handling 150,000+ RPS across multi-region cloud environments with sub-15ms p99 latency.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+Distributed Systems, Go, Python, Rust, Apache Kafka, PostgreSQL, Redis Cluster, Raft Consensus, Kubernetes, OpenTelemetry, High Concurrency, System Design
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Staff Distributed Systems Architect — CloudScale Platforms Inc. (2022 - Present)
+  • Architected high-throughput financial event streaming ingestion engine processing 150k RPS using Go, Kafka, and Redis Streams with zero data loss.
+  • Designed zero-downtime database failover automation using Raft consensus and PostgreSQL logical replication, reducing failover RTO from 12 mins to under 1.5 seconds.
+  • Eliminated write amplification contention on distributed ledger tables by implementing declarative range partitioning and custom composite BRIN indexing.
+  • Authored distributed tracing standards across 45 microservices using OpenTelemetry and Jaeger, cutting critical incident MTTR by 52%.
+
+Senior Backend Systems Engineer — Nexus Data Infrastructure (2018 - 2022)
+  • Engineered distributed cache invalidation protocol handling 80,000 ops/sec across 12-node Redis Cluster.
+  • Migrated monolithic payment settlement services into decoupled event-driven services with Python FastAPI and gRPC.
+  • Led chaos engineering drills and simulated partition splits (CAP theorem verification) across multi-zone Kubernetes clusters.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.S. in Computer Science, Carnegie Mellon University (2018)

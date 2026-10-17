@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  talentpilot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=talentpilot-production-super-secret-key-2026
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - APP_ORIGIN=http://localhost:8000
+      - DATABASE_URL=sqlite:////app/talentpilot.db
+    volumes:
+      - talentpilot_data:/app/uploads
+      - talentpilot_reports:/app/reports
+    restart: unless-stopped
+
+volumes:
+  talentpilot_data:
+  talentpilot_reports:

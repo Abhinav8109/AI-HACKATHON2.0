@@ -1,0 +1,30 @@
+======================================================================
+ABHINAV KUMAR
+Senior Full-Stack Product Engineer
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 604-1234 | Location: New York, NY (Remote)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Senior Full-Stack Engineer with 7+ years delivering user-obsessed SaaS products. Specialized in React 19, TypeScript, Tailwind CSS, FastAPI, and PostgreSQL. Passionate about design token systems, WCAG 2.2 AA accessibility, and micro-interactions.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+React 19, TypeScript, Tailwind CSS, Next.js, Python, FastAPI, PostgreSQL, Node.js, GraphQL, Framer Motion, State Management, WCAG 2.2 AA
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Lead Frontend / Full-Stack Engineer — Lumina SaaS Studio (2021 - Present)
+  • Architected and built company's primary analytics command center with React 19, TypeScript, and Tailwind CSS, achieving 99 Lighthouse performance score.
+  • Engineered real-time collaboration canvas with optimistic UI updates and WebSocket autosave, eliminating draft loss entirely.
+  • Refactored design token architecture with WCAG 2.2 AA accessible focus rings, keyboard navigability, and luminous light/dark themes.
+  • Developed backend FastAPI REST endpoints with Pydantic validation schemas and SQLAlchemy relational storage.
+
+Full-Stack Software Engineer — CraftFlow Technologies (2017 - 2021)
+  • Built responsive web portals supporting 300,000 monthly active enterprise users.
+  • Integrated Stripe billing, role-based JWT authorization, and tenant isolation policies.
+  • Mentored junior engineers and led code review initiatives improving team velocity by 30%.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.S. in Software Engineering, University of Michigan (2017)

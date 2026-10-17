@@ -1,0 +1,29 @@
+======================================================================
+ABHINAV PATEL
+Junior DevOps & Cloud Associate
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 314-5521 | Location: Austin, TX (Hybrid)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Enthusiastic Junior DevOps Engineer with 2 years of hands-on experience building CI/CD pipelines, containerizing applications with Docker, and assisting with cloud automation on AWS. Certified AWS Solutions Architect Associate.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+Docker, AWS (EC2, S3, RDS, IAM), GitHub Actions, Linux / Bash Scripting, Python, Terraform Basics, Kubernetes Fundamentals, Git
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Associate DevOps Engineer — NextGen Web Solutions (2024 - Present)
+  • Automated build and test workflows in GitHub Actions for 8 Python FastAPI and Node.js repositories.
+  • Containerized multi-tier web applications using multi-stage Dockerfiles, reducing average image size by 65%.
+  • Configured AWS CloudWatch alerts and PagerDuty routing to monitor production API endpoints.
+  • Created Bash automation scripts to streamline developer onboarding and local environment setup.
+
+Cloud Operations Intern — Apex Cloud Labs (2023 - 2024)
+  • Monitored staging and production infrastructure health, assisting senior engineers during triage.
+  • Assisted in maintaining Terraform state files and writing basic security group and VPC configurations.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.S. in Information Technology, University of Texas at Dallas (2023)

@@ -1,0 +1,30 @@
+======================================================================
+ABHINAV CLOUD
+Principal AI & LLM Systems Engineer
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 481-9920 | Location: Seattle, WA (Remote)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Principal AI Platform Engineer specializing in high-throughput LLM serving infrastructure, specialized multi-agent orchestrators, and enterprise vector search. Extensive experience optimizing inference latency with vLLM, FlashAttention-2, and TensorRT-LLM.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+Python, PyTorch, vLLM, FlashAttention, LangChain, Gemini API, FastAPI, Vector Databases, Qdrant, Ray, Triton Inference Server, CUDA
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Principal AI Infrastructure Engineer — Synthetix AI Labs (2023 - Present)
+  • Spearheaded enterprise LLM serving cluster serving 80M daily tokens with vLLM and continuous batching on NVIDIA H100s, slashing p99 Time-To-First-Token by 44%.
+  • Architected specialized multi-agent evaluation orchestrator with bounded retries, structured JSON outputs, and adversarial critic validation.
+  • Designed low-latency hybrid semantic search pipeline using Qdrant vector indexing and cross-encoder re-ranking handling 3,500 queries/sec.
+  • Built prompt-injection defense shield sanitizing untrusted candidate documents and neutralizing delimiter hijack payloads.
+
+Senior Machine Learning Systems Engineer — DeepVision Intelligence (2019 - 2023)
+  • Trained and fine-tuned domain-specific transformer models using PyTorch Distributed Data Parallel (DDP).
+  • Built end-to-end feature store and model evaluation tracking pipeline serving real-time scoring to production microservices.
+  • Optimized inference throughput by 3.2x via quantization (AWQ / FP8) and custom Triton kernels.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+M.S. in Artificial Intelligence, Stanford University (2019)

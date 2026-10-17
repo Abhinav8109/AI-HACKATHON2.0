@@ -1,0 +1,24 @@
+======================================================================
+ABHINAV TECHCRAFT
+Cloud Architect & System Builder
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 432-8765 | Location: Remote Everywhere
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Non-traditional self-taught engineer with 6 years building distributed cloud backends, infrastructure automation tools, and open-source packages.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+Terraform, Kubernetes, Python, Go, AWS, Bash, Prometheus, Linux, Open Source
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Independent Cloud Infrastructure Consultant — Self-Employed / Various Tech Clients (2020 - Present)
+  • Contracted for 8 fast-growing startups designing initial AWS foundations with Terraform and Docker.
+  • Built automated backup and disaster recovery solutions preventing catastrophic data loss.
+  • Conducted developer workshops on containerization best practices and GitOps pipelines.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+Self-Taught / Open Source Contributor | Multiple Cloud Certifications

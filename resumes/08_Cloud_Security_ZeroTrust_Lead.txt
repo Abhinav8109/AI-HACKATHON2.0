@@ -1,0 +1,29 @@
+======================================================================
+ABHINAV S.
+Cloud Security & Zero-Trust Architecture Lead
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 712-3456 | Location: Denver, CO (Remote)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Cloud Security Architect with 9 years hardening enterprise cloud environments across AWS and GCP. Deep expertise in Zero Trust network architectures, HashiCorp Vault secrets management, IAM least-privilege automation, and SOC2 / ISO-27001 compliance.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+Cloud Security, AWS IAM, HashiCorp Vault, Zero Trust, Istio mTLS, SOC2 Compliance, Trivy / Snyk, Terraform, Kubernetes Hardening, Python, Incident Response
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Head of Cloud Security Architecture — Fortress Cloud Security (2021 - Present)
+  • Enforced Zero Trust security posture with mTLS service-to-service communication using Istio and HashiCorp Vault dynamic secrets.
+  • Constructed hardened CI/CD deployment pipelines with automated container vulnerability scanning (Trivy), preventing high-severity CVE deployments.
+  • Automated IAM least-privilege policy pruning using AWS Access Analyzer and custom Python audit lambdas.
+  • Directed SOC2 Type II compliance audit, successfully certifying identity governance, audit logging, and cryptographic data isolation.
+
+Senior Security Engineer — Apex Cloud Systems (2016 - 2021)
+  • Configured AWS Security Hub, GuardDuty, and centralized SIEM ingestion into Splunk.
+  • Conducted regular penetration testing and red-team adversary simulations on production cloud perimeters.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.S. in Computer Engineering, University of Texas at Austin (2016)

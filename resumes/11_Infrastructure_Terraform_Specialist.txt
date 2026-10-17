@@ -1,0 +1,29 @@
+======================================================================
+ABHINAV CHOUDHURY
+Senior Infrastructure & Terraform Specialist
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 881-3342 | Location: Raleigh, NC (Remote)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Infrastructure Automation Specialist with 8 years dedicated to Terraform / OpenTofu module design, multi-cloud foundations, policy-as-code (Sentinel / OPA), and state management. HashiCorp Certified Terraform Associate.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+Terraform, OpenTofu, Terragrunt, AWS, Azure, OPA / Conftest, Python, Bash, GitHub Actions, Packer, Linux, GitOps
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Principal Infrastructure Automation Engineer — InfraTerra Cloud Corp (2021 - Present)
+  • Engineered enterprise Terraform module library with Terragrunt managing 400+ cloud resources across 12 AWS accounts.
+  • Enforced security policy-as-code using Open Policy Agent (OPA) and Conftest, blocking insecure S3 buckets and public IAM roles in CI.
+  • Designed zero-downtime state migration strategies moving legacy AWS CloudFormation stacks to modular Terraform code.
+  • Built automated drift-detection scheduled jobs alerting engineering teams to out-of-band console modifications.
+
+Cloud Infrastructure Engineer — CloudForge Technologies (2017 - 2021)
+  • Automated golden AMI image pipelines using HashiCorp Packer and Ansible.
+  • Maintained centralized Terraform remote state storage on S3 with DynamoDB state locking.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.S. in Computer Science, North Carolina State University (2017)

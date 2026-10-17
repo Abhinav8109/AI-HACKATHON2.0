@@ -1,0 +1,30 @@
+======================================================================
+ABHINAV S.
+Cloud Security & DevOps Platform Lead
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 712-3456 | Location: Austin, TX (Remote)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+DevOps and Cloud Security Platform Lead with 9 years architecting resilient multi-cloud foundations on AWS and GCP. Deep expertise in Terraform, Kubernetes cluster hardening, Zero Trust network architecture, and SOC2 / ISO-27001 compliance automation.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+Kubernetes, Docker, Terraform, AWS, GCP, Zero Trust, Istio Service Mesh, GitHub Actions CI/CD, Vault, Linux Internals, SOC2 Compliance, Prometheus
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Head of Platform & Cloud Infrastructure — Fortress Cloud Security (2021 - Present)
+  • Designed and automated multi-region AWS EKS Kubernetes infrastructure with Terraform and GitOps (ArgoCD) achieving 99.99% uptime SLA.
+  • Enforced Zero Trust security posture with mTLS service-to-service communication using Istio and HashiCorp Vault dynamic secrets.
+  • Constructed hardened CI/CD deployment pipelines with automated container vulnerability scanning (Trivy), reducing deployment lead time from days to 14 minutes.
+  • Directed SOC2 Type II compliance audit, successfully certifying identity governance, audit logging, and cryptographic data isolation.
+
+Senior Cloud Infrastructure Engineer — Apex Cloud Systems (2016 - 2021)
+  • Engineered automated blue-green zero-downtime deployment workflows for 60+ microservices.
+  • Implemented centralized logging and metrics monitoring with Prometheus, Grafana, and OpenSearch.
+  • Reduced cloud spend by 38% via Kubernetes cluster auto-scaling and spot instance optimization.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.S. in Computer Engineering, University of Texas at Austin (2016)

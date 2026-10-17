@@ -1,0 +1,29 @@
+======================================================================
+ABHINAV CLOUD
+Principal ML Systems & LLM Platform Engineer
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 481-9920 | Location: Seattle, WA (Remote)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Machine Learning Systems Engineer specializing in high-throughput LLM serving infrastructure, multi-agent evaluation topologies, and GPU acceleration. Extensive experience deploying vLLM, FlashAttention, and Triton Inference Server at scale.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+PyTorch, vLLM, FlashAttention, Triton Server, Python, CUDA, LangChain / LlamaIndex, Vector DBs (Qdrant, Pinecone), Docker, Kubernetes, Ray
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Principal AI Platform Engineer — Synthetix AI Labs (2023 - Present)
+  • Spearheaded enterprise LLM cluster serving 80M daily tokens with vLLM and continuous batching on NVIDIA H100s, slashing p99 TTFT by 44%.
+  • Architected specialized multi-agent evaluation orchestrator with bounded retries, structured JSON outputs, and adversarial critic validation.
+  • Designed low-latency hybrid semantic search pipeline using Qdrant vector indexing and cross-encoder re-ranking handling 3,500 queries/sec.
+  • Built prompt-injection defense shield sanitizing untrusted candidate documents and neutralizing delimiter hijack payloads.
+
+Senior ML Infrastructure Engineer — DeepVision Intelligence (2019 - 2023)
+  • Trained and fine-tuned domain-specific transformer models using PyTorch Distributed Data Parallel (DDP).
+  • Optimized inference throughput by 3.2x via quantization (AWQ / FP8) and custom Triton kernels.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+M.S. in Artificial Intelligence, Stanford University (2019)

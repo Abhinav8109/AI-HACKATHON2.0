@@ -1,0 +1,29 @@
+======================================================================
+ABHINAV N.
+Associate Cloud & DevOps Engineer
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 231-9081 | Location: Philadelphia, PA (Remote)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Motivated Associate Cloud Engineer with a background in Mechanical Engineering and 2 years intensive software development and cloud operations experience. Passionate about automation, infrastructure as code, and cloud monitoring. Holds AWS Certified Developer Associate certification.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+AWS (EC2, S3, Lambda, CloudWatch), Python, Linux Command Line, Docker, Git, Terraform Basics, CI/CD Concepts, SQL Basics
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Associate Cloud Engineer — Catalyst Cloud Solutions (2024 - Present)
+  • Assisted in managing AWS infrastructure resources and deploying containerized Python microservices.
+  • Developed serverless AWS Lambda automation functions in Python to clean up untagged EBS snapshots, saving $1,500/month.
+  • Created CloudWatch dashboards and metrics filters for application error rates and request latencies.
+  • Collaborated with senior DevOps engineers to document deployment runbooks and rollback procedures.
+
+Systems Automation Analyst — Precision Engineering Systems (2021 - 2024)
+  • Wrote Python data analysis scripts processing telemetry data from industrial manufacturing hardware.
+  • Automated daily report generation and database backups using Cron and Bash scripting.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.S. in Mechanical Engineering, Penn State University (2021) | AWS Certified Developer Associate (2024)

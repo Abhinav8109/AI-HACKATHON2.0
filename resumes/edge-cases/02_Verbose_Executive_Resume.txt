@@ -1,0 +1,34 @@
+======================================================================
+ABHINAV EXECUTIVE
+VP of Cloud Platform & Systems Engineering
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 999-8888 | Location: San Francisco, CA
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Executive technology leader with 16+ years scaling engineering organizations from early-stage through IPO. Proven executive track record overseeing 120+ cloud engineers, managing $25M annual infrastructure budgets, and spearheading enterprise cloud transformation, security compliance (SOC2 Type II, FedRAMP), and global 99.999% reliability standards.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+Executive Leadership, Strategic Cloud Architecture, Budget Optimization ($25M+), Global Infrastructure, SOC2 Type II / FedRAMP, Multi-Cloud Strategy, DevOps Culture, Incident Management, Talent Mentorship, Vendor Negotiation, Kubernetes, AWS / GCP
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Vice President of Cloud Platform Engineering — Global Enterprise Systems Corp (2020 - Present)
+  • Lead an organization of 120+ cloud, SRE, and platform engineers across North America and Europe.
+  • Managed $25M annual cloud budget, delivering $6.2M in annual efficiency savings through contractual reservation planning and architecture refactoring.
+  • Maintained five-nines (99.999%) availability across core enterprise financial transactional platforms handling $80B annual GMV.
+  • Established security and governance committee achieving FedRAMP In-Process status and continuous SOC2 compliance.
+
+Director of Infrastructure & Operations — HyperGrowth Cloud Inc. (2015 - 2020)
+  • Grew infrastructure engineering department from 8 to 45 engineers through high-bar talent acquisition.
+  • Led complete cloud migration from colocation datacenters to AWS, reducing operating overhead by 40%.
+  • Introduced site reliability engineering (SRE) practices and company-wide post-mortem culture.
+
+Principal Systems Architect — Foundational Tech Solutions (2010 - 2015)
+  • Architected high-throughput distributed caching and database clustering solutions.
+  • Authored company foundational engineering RFC guidelines and design review standards.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+M.S. in Computer Science, Stanford University (2010) | B.S. in Electrical Engineering, MIT (2008)

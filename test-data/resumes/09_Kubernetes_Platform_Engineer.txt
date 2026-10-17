@@ -1,0 +1,29 @@
+======================================================================
+ABHINAV JOSHI
+Staff Kubernetes Platform Engineer
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 519-7723 | Location: San Jose, CA (Remote)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Staff Platform Engineer specializing in container orchestration, Kubernetes custom controllers (CRDs / Kubebuilder), service meshes (Cilium, Istio), and multi-tenant developer platforms. CKA and CKS certified.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+Kubernetes (EKS, GKE), Go, Kubebuilder / CRDs, Helm, Cilium CNI, eBPF, ArgoCD, Crossplane, Prometheus, Linux Kernel, Docker
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Staff Platform Engineer — KubeCloud Enterprise (2022 - Present)
+  • Built internal developer platform (IDP) with custom Kubernetes CRDs in Go, enabling 200+ engineers to self-serve production environments in under 3 minutes.
+  • Implemented Cilium eBPF-based networking and network policies, replacing kube-proxy and reducing inter-pod latency by 35%.
+  • Managed multi-cluster fleet of 50+ Kubernetes clusters using ArgoCD and GitOps standards.
+  • Hardened cluster security according to CIS Kubernetes benchmarks, implementing Falco runtime threat detection.
+
+DevOps / Infrastructure Engineer — CloudNative Solutions (2018 - 2022)
+  • Migrated legacy Docker Swarm workloads to managed AWS EKS clusters.
+  • Created Helm charts and CI/CD automated test harness for distributed microservices.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.S. in Computer Science, San Jose State University (2018)

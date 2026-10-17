@@ -1,0 +1,29 @@
+======================================================================
+ABHINAV KUMAR
+Lead Full-Stack Product Engineer
+Email: abhinavclouds@gmail.com | Phone: +1 (555) 604-1234 | Location: Boston, MA (Remote)
+======================================================================
+
+PROFESSIONAL SUMMARY
+----------------------------------------------------------------------
+Lead Full-Stack Product Engineer with 7+ years crafting responsive, accessible, and high-performance web applications using React, TypeScript, Next.js, Node.js, and Tailwind CSS. Obsessed with micro-interactions, WCAG 2.2 AA accessibility, and developer ergonomics.
+
+TECHNICAL PROFICIENCIES & CORE SKILLS
+----------------------------------------------------------------------
+TypeScript, React 19, Next.js, Tailwind CSS, Node.js, FastAPI, GraphQL, Framer Motion, Jest / Playwright, Vite, Zustand
+
+PROFESSIONAL EXPERIENCE
+----------------------------------------------------------------------
+Lead Full-Stack Product Engineer — Lumina SaaS Studio (2021 - Present)
+  • Architected company flagship enterprise dashboard in React 19, TypeScript, and Tailwind CSS with sub-second page loads.
+  • Engineered optimistic UI updates and real-time collaboration canvas via WebSockets, eliminating user data collisions.
+  • Implemented WCAG 2.2 AA accessibility audit standards across 150+ UI components, achieving 100% keyboard accessibility.
+  • Authored comprehensive end-to-end testing suite with Playwright and GitHub Actions CI running on every pull request.
+
+Full-Stack Engineer — CraftFlow Studio (2018 - 2021)
+  • Built customer-facing billing and checkout portal with React, Stripe Elements, and Node.js backend.
+  • Migrated monolithic frontend codebase to modern TypeScript monorepo with Turborepo.
+
+EDUCATION & CREDENTIALS
+----------------------------------------------------------------------
+B.S. in Software Engineering, University of Michigan (2018)
