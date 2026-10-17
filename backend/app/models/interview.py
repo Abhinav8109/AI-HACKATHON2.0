@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from enum import Enum
-from sqlalchemy import Column, String, DateTime, ForeignKey, Text, JSON, Integer, Boolean
+from sqlalchemy import Column, String, DateTime, ForeignKey, Text, JSON, Integer, Boolean, Float
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -106,6 +106,8 @@ class InterviewAnswer(Base):
     parent_answer_id = Column(String(36), nullable=True)
     follow_up_prompt = Column(Text, nullable=True)
     word_count = Column(Integer, default=0)
+    ai_score = Column(Float, nullable=True)
+    ai_review = Column(Text, nullable=True)
     saved_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

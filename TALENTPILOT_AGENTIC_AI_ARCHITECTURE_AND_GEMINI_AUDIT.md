@@ -225,7 +225,30 @@ The entire agent suite was verified through automated end-to-end integration tes
 
 ---
 
-## 6. Zero-Downtime Deterministic Fallback Engineering
+## 6. Strict Honest 0.0 - 5.0 Scoring Policy & Per-Question Verbatim Evidence Engine
+
+To eliminate evaluation bias, score inflation, and empty keyword stuffing, TalentPilot AI enforces an unsparing, per-question AI audit:
+
+### 6.1 Strict Scoring Calibration (Zero Tolerance for Fluff)
+- **Score 0.0 / 5.0 (Non-Responsive / Off-Topic)**: Assigned when the candidate submits empty text, single-word filler (e.g. "fail", "yes", "not sure"), evasive statements, or text unrelated to the question.
+- **Score 1.0 / 5.0 (Superficial / Barely Useful)**: Assigned when the candidate submits 1-2 generic sentences repeating textbook buzzwords without describing implementation mechanics, architectural trade-offs, or production realities.
+- **Score 2.0 / 5.0 (Developing)**: Touches on valid technical concepts but lacks disaster recovery, failure modes, or concrete architecture.
+- **Score 3.0 / 5.0 (Meets Competency)**: Solid standard engineering architecture meeting industry expectations.
+- **Score 4.0 / 5.0 (Strong Evidence)**: Proactive analysis of system trade-offs (latency vs consistency), quantitative metrics, and failure recovery.
+- **Score 5.0 / 5.0 (Exemplary Demonstration)**: Exceptional architectural mastery with battle-tested production proof.
+
+### 6.2 Per-Question Evidence Extraction
+Every single question answered by the candidate is individually evaluated and displayed in the dossier:
+1. Full Question Prompt
+2. Verbatim Candidate Proof Quote
+3. AI Evaluator Agent Technical Critique
+4. Missing Engineering Elements & Points Deducted
+5. Authenticity & Signal Rating (Authentic Practitioner vs Low Signal)
+6. Real-Time Re-Audit capability accessible via `POST /api/v1/candidates/{id}/re-evaluate`
+
+---
+
+## 7. Zero-Downtime Deterministic Fallback Engineering
 
 In production enterprise deployments, external AI APIs may experience transient network failures, latency spikes, or rate limiting. TalentPilot AI implements a dual-mode execution strategy:
 

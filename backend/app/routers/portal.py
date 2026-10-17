@@ -298,6 +298,14 @@ async def finalize_interview(
         development_areas=eval_result.get("development_areas", [])
     )
 
+    per_q = eval_result.get("per_question_reviews", [])
+
+    # Update individual answers with AI score and critique
+    for idx, a in enumerate(answers):
+        if idx < len(per_q):
+            a.ai_score = per_q[idx].get("score")
+            a.ai_review = per_q[idx].get("ai_critique")
+
     # Persist CandidateEvaluation
     existing_eval = db.query(CandidateEvaluation).filter(CandidateEvaluation.candidate_id == candidate.id).first()
     if not existing_eval:
@@ -310,7 +318,8 @@ async def finalize_interview(
             strengths=eval_result.get("strengths", []),
             development_areas=eval_result.get("development_areas", []),
             human_review_required=critic_result.get("human_review_flagged", False),
-            candidate_feedback_text=feedback_text
+            candidate_feedback_text=feedback_text,
+            per_question_reviews=per_q
         )
         db.add(evaluation)
         db.flush()
@@ -323,18 +332,25 @@ async def finalize_interview(
         evaluation.development_areas = eval_result.get("development_areas", [])
         evaluation.human_review_required = critic_result.get("human_review_flagged", False)
         evaluation.candidate_feedback_text = feedback_text
+        evaluation.per_question_reviews = per_q
 
-    # Dimension scores
-    for dim in eval_result.get("dimensions", []):
+    # Clean old evaluation items
+    db.query(EvaluationEvidence).filter(EvaluationEvidence.evaluation_id == evaluation.id).delete()
+    db.query(ConsistencyFinding).filter(ConsistencyFinding.evaluation_id == evaluation.id).delete()
+    db.query(CriticReview).filter(CriticReview.evaluation_id == evaluation.id).delete()
+
+    # Save per-question evidence items FIRST so recruiters see Q1, Q2, Q3...
+    for pq in per_q:
+        q_label = f"Question {pq['question_number']}: {pq.get('question_text', '')[:65]}..."
         ev_item = EvaluationEvidence(
             evaluation_id=evaluation.id,
-            dimension_name=dim.get("dimension_name"),
-            score=dim.get("score"),
-            rubric_anchor=dim.get("rubric_anchor"),
-            evidence_quote=dim.get("evidence_quote"),
-            explanation=dim.get("explanation"),
-            missing_evidence=dim.get("missing_evidence"),
-            confidence_limitations=dim.get("confidence_limitations")
+            dimension_name=q_label,
+            score=pq.get("score", 0.0),
+            rubric_anchor=pq.get("rubric_anchor", "Developing"),
+            evidence_quote=pq.get("evidence_quote", "No evidence quote"),
+            explanation=pq.get("ai_critique", ""),
+            missing_evidence="; ".join(pq.get("missing_elements", [])) or "None identified",
+            confidence_limitations=f"Relevance: {pq.get('relevance_to_question', 'HIGH')} • Signal: {pq.get('authenticity_rating', 'AUTHENTIC')}"
         )
         db.add(ev_item)
 

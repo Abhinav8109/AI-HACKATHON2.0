@@ -57,6 +57,7 @@ class CandidateEvaluation(Base):
 
     human_review_required = Column(Boolean, default=False)
     candidate_feedback_text = Column(Text, nullable=True)
+    per_question_reviews = Column(JSON, default=list)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

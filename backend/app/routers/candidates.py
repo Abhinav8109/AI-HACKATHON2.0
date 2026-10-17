@@ -12,7 +12,7 @@ from app.models.user import User, UserRole
 from app.models.candidate import Candidate, CandidateResume, ResumeClaim, CandidateStatus
 from app.models.campaign import HiringCampaign, CompetencyMatrix
 from app.models.interview import InterviewPlan, InterviewQuestion, InterviewInvitation, InterviewSession, SessionStatus
-from app.models.assessment import CandidateEvaluation, FinalDecision
+from app.models.assessment import CandidateEvaluation, FinalDecision, EvaluationEvidence, ConsistencyFinding, CriticReview
 from app.models.audit import AuditEvent
 from app.schemas.candidate import CandidateCreate, CandidateResponse
 from app.auth.dependencies import get_current_user, get_optional_current_user, require_role
@@ -20,6 +20,10 @@ from app.services.document_service import DocumentService
 from app.services.gemini_service import gemini_service
 from app.services.agents.planner_agent import PlannerAgent
 from app.services.agents.debrief_agent import DebriefAgent
+from app.services.agents.evaluator_agent import EvaluatorAgent
+from app.services.agents.consistency_agent import ConsistencyAgent
+from app.services.agents.critic_agent import CriticAgent
+from app.services.agents.feedback_agent import FeedbackAgent
 from app.services.audit_service import AuditService
 from app.services.email_service import EmailService
 
@@ -495,5 +499,167 @@ async def get_candidate_executive_memo(
         recruiter_rationale=recruiter_rationale
     )
     return memo
+
+
+@router.post("/{candidate_id}/re-evaluate")
+async def trigger_deep_ai_reevaluation(
+    candidate_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    On-Demand Multi-Agent Deep Re-Evaluation:
+    Triggers Gemini EvaluatorAgent, ConsistencyAgent, and CriticAgent to perform
+    an unsparing, per-question audit with honest 0.0-5.0 scoring and verbatim evidence.
+    """
+    candidate = db.query(Candidate).filter(Candidate.id == candidate_id).first()
+    if not candidate:
+        raise HTTPException(status_code=404, detail="Candidate not found")
+
+    session = candidate.interview_session
+    answers = session.answers if session else []
+    if not answers:
+        raise HTTPException(status_code=400, detail="Cannot re-evaluate candidate: No interview answers recorded.")
+
+    campaign = candidate.campaign
+    job_title = campaign.job_title if campaign else (candidate.current_title or "Software Engineer")
+
+    # 1. Gather QA pairs
+    qa_pairs = []
+    for a in answers:
+        q = a.question
+        prompt_used = a.follow_up_prompt if a.is_follow_up else (q.question_text if q else "General Question")
+        qa_pairs.append({
+            "question": prompt_used,
+            "answer": a.answer_text
+        })
+
+    # 2. Run Evaluator Agent (Per-Question Deep Analysis with 0-5 honest scoring)
+    eval_result = await EvaluatorAgent.evaluate_interview(
+        job_title=job_title,
+        qa_pairs=qa_pairs,
+        rubric_dimensions=[]
+    )
+
+    per_q = eval_result.get("per_question_reviews", [])
+
+    # 3. Update answers with per-question score and review
+    for idx, a in enumerate(answers):
+        if idx < len(per_q):
+            a.ai_score = per_q[idx].get("score")
+            a.ai_review = per_q[idx].get("ai_critique")
+
+    # 4. Run Consistency Agent
+    claims = [
+        {"claim_text": c.claim_text, "category": c.category, "source_excerpt": c.source_excerpt}
+        for c in candidate.claims
+    ]
+    transcript_text = "\n\n".join([f"Q: {qa['question']}\nA: {qa['answer']}" for qa in qa_pairs])
+    consistency_results = await ConsistencyAgent.analyze_claims(claims, transcript_text)
+
+    # 5. Run Critic Agent
+    critic_result = await CriticAgent.validate_evaluation(eval_result, qa_pairs)
+
+    # 6. Run Feedback Agent
+    feedback_text = await FeedbackAgent.generate_feedback(
+        candidate_name=candidate.full_name,
+        job_title=job_title,
+        strengths=eval_result.get("strengths", []),
+        development_areas=eval_result.get("development_areas", [])
+    )
+
+    # 7. Persist or Update CandidateEvaluation
+    existing_eval = candidate.evaluation
+    if not existing_eval:
+        evaluation = CandidateEvaluation(
+            candidate_id=candidate.id,
+            interview_session_id=session.id if session else None,
+            overall_score=eval_result.get("overall_score", 3.0),
+            recommendation=eval_result.get("recommendation", "HOLD_FOR_REVIEW"),
+            summary=eval_result.get("summary", ""),
+            strengths=eval_result.get("strengths", []),
+            development_areas=eval_result.get("development_areas", []),
+            human_review_required=critic_result.get("human_review_flagged", False),
+            candidate_feedback_text=feedback_text,
+            per_question_reviews=per_q
+        )
+        db.add(evaluation)
+        db.flush()
+    else:
+        evaluation = existing_eval
+        evaluation.overall_score = eval_result.get("overall_score", 3.0)
+        evaluation.recommendation = eval_result.get("recommendation", "HOLD_FOR_REVIEW")
+        evaluation.summary = eval_result.get("summary", "")
+        evaluation.strengths = eval_result.get("strengths", [])
+        evaluation.development_areas = eval_result.get("development_areas", [])
+        evaluation.human_review_required = critic_result.get("human_review_flagged", False)
+        evaluation.candidate_feedback_text = feedback_text
+        evaluation.per_question_reviews = per_q
+
+    # Clean old evidence items to avoid duplication
+    db.query(EvaluationEvidence).filter(EvaluationEvidence.evaluation_id == evaluation.id).delete()
+    db.query(ConsistencyFinding).filter(ConsistencyFinding.evaluation_id == evaluation.id).delete()
+    db.query(CriticReview).filter(CriticReview.evaluation_id == evaluation.id).delete()
+
+    # Save per-question evidence items
+    for pq in per_q:
+        q_label = f"Question {pq['question_number']}: {pq.get('question_text', '')[:65]}..."
+        ev_item = EvaluationEvidence(
+            evaluation_id=evaluation.id,
+            dimension_name=q_label,
+            score=pq.get("score", 0.0),
+            rubric_anchor=pq.get("rubric_anchor", "Developing"),
+            evidence_quote=pq.get("evidence_quote", "No evidence quote"),
+            explanation=pq.get("ai_critique", ""),
+            missing_evidence="; ".join(pq.get("missing_elements", [])) or "None identified",
+            confidence_limitations=f"Relevance: {pq.get('relevance_to_question', 'HIGH')} • Signal: {pq.get('authenticity_rating', 'AUTHENTIC')}"
+        )
+        db.add(ev_item)
+
+    for cf in consistency_results:
+        c_item = ConsistencyFinding(
+            evaluation_id=evaluation.id,
+            claim_text=cf.get("claim_text"),
+            answer_excerpt=cf.get("answer_excerpt"),
+            finding_type=cf.get("finding_type"),
+            explanation=cf.get("explanation"),
+            suggested_follow_up=cf.get("suggested_follow_up")
+        )
+        db.add(c_item)
+
+    cr_item = CriticReview(
+        evaluation_id=evaluation.id,
+        alignment_score=critic_result.get("alignment_score", 1.0),
+        passed_validation=critic_result.get("passed_validation", True),
+        flags=critic_result.get("flags", []),
+        critic_summary=critic_result.get("critic_summary", ""),
+        human_review_flagged=critic_result.get("human_review_flagged", False)
+    )
+    db.add(cr_item)
+
+    AuditService.log(
+        db,
+        action="DEEP_AI_REEVALUATION_COMPLETED",
+        resource_type="CANDIDATE",
+        resource_id=candidate.id,
+        user_id=current_user.id,
+        user_email=current_user.email,
+        details={
+            "overall_score": evaluation.overall_score,
+            "questions_evaluated": len(per_q),
+            "recommendation": evaluation.recommendation
+        }
+    )
+
+    db.commit()
+
+    return {
+        "message": f"Successfully performed deep AI multi-agent audit across {len(per_q)} questions",
+        "overall_score": evaluation.overall_score,
+        "recommendation": evaluation.recommendation,
+        "per_question_reviews": per_q,
+        "evidence_count": len(per_q)
+    }
+
 
 
